@@ -31,10 +31,10 @@ def hashedName(name, bits=5):
     h = hashlib.sha256(name).hexdigest()
     return name[:(100-bits)] + h[:bits]
 
-def makeConfig(path, name, das):
-    subprocess.call([path+"/scripts/make%s.sh" % name, das, name])
+def makeConfig(path, name, das, nThreads):
+    subprocess.call([path+"/scripts/make%s.sh" % name, das, name, str(nThreads)])
 
-def makeSubmitFiles(inputFile, doConfig):
+def makeSubmitFiles(inputFile, nThreads, doConfig):
     path = os.environ['CMSSW_BASE']+"/src/Configuration/WMassNanoProduction"
 
     if not os.path.isfile(inputFile):
@@ -45,7 +45,6 @@ def makeSubmitFiles(inputFile, doConfig):
         raise RuntimeError("The input dataset %s is empty" % input_path)
 
     era = "NanoV8"
-    configsMade = []
 
     for i in inputs:
         name = era+nameFromInput(i)
@@ -54,7 +53,7 @@ def makeSubmitFiles(inputFile, doConfig):
         config = "/".join([path, "configs", config_name])
 
         if doConfig and name not in configsMade:
-            makeConfig(path, name, i)
+            makeConfig(path, name, i, nThreads)
             configsMade.append(name)
 
         if not os.path.isfile(config):
@@ -68,17 +67,21 @@ def makeSubmitFiles(inputFile, doConfig):
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
         fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
             outfile, 
-            {"era" : name, "splitting" : "LumiBased" if isData else "FileBased",
-            "name" : requestName, "input" : i, "config" : config_name, "units" : 100 if isData else 4})
+            {"era" : name, "splitting" : "LumiBased" if isData else "FileBased", 
+                "threads" : nThreads, "memory" : nThreads*2000, "name" : requestName, 
+                "input" : i, "config" : config_name, "units" : 100 if isData else 4})
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to build config file')
 inputType = parser.add_mutually_exclusive_group()
 inputType.add_argument('-i', '--inputFiles', type=str, nargs='*', help='inputFiles to process')
+inputType.add_argument('-j', '--nThreads', type=int, default=4, 
+    help="number of threads (make sure its consistent if you're not regenerating configs)")
 args = parser.parse_args()
 
 logging.basicConfig(level=logging.INFO)
 
+configsMade = []
 for i in args.inputFiles:
-    makeSubmitFiles(i, args.makeConfig)
+    makeSubmitFiles(i, 4, args.makeConfig)

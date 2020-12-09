@@ -6,8 +6,8 @@ config.General.workArea = 'crab_projects'
 config.General.transferOutputs = True
 config.General.transferLogs = True
 
-config.JobType.numCores = 4
-config.JobType.maxMemoryMB = 8000
+config.JobType.numCores = ${threads}
+config.JobType.maxMemoryMB = ${memory}
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '../configs/${config}'
 config.JobType.allowUndistributedCMSSW = True
