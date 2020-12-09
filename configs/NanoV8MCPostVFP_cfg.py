@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: RECO --conditions 106X_mcRun2_asymptotic_v15 --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --filein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAOD-106X_mcRun2_asymptotic_v13-v2/MINIAODSIM --fileout file:configs/NanoV8MCPostVFP.root --nThreads 4 --no_exec --python_filename configs/NanoV8MCPostVFP_cfg.py --scenario pp --step NANO --data
+# with command line options: RECO --conditions 106X_mcRun2_asymptotic_v15 --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --filein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAOD-106X_mcRun2_asymptotic_v13-v2/MINIAODSIM --fileout file:NanoV8MCPostVFP.root --nThreads 4 --no_exec --python_filename configs/NanoV8MCPostVFP_cfg.py --scenario pp --step NANO --data
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run2_2016_cff import Run2_2016
@@ -1602,7 +1602,7 @@ process.NANOAODoutput = cms.OutputModule("NanoAODOutputModule",
         dataTier = cms.untracked.string('NANOAOD'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('file:configs/NanoV8MCPostVFP.root'),
+    fileName = cms.untracked.string('file:NanoV8MCPostVFP.root'),
     outputCommands = process.NANOAODEventContent.outputCommands
 )
 

@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: RECO --conditions 106X_dataRun2_v32 --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --filein dbs:/SingleMuon/Run2016B-21Feb2020_ver2_UL2016_HIPM-v1/MINIAOD --fileout file:configs/NanoV8Data.root --nThreads 4 --no_exec --python_filename configs/NanoV8Data_cfg.py --scenario pp --step NANO --data
+# with command line options: RECO --conditions 106X_dataRun2_v32 --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --filein dbs:/SingleMuon/Run2016B-21Feb2020_ver2_UL2016_HIPM-v1/MINIAOD --fileout file:NanoV8Data.root --nThreads 4 --no_exec --python_filename configs/NanoV8Data_cfg.py --scenario pp --step NANO --data
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run2_2016_cff import Run2_2016
@@ -1089,7 +1089,7 @@ process.NANOAODoutput = cms.OutputModule("NanoAODOutputModule",
         dataTier = cms.untracked.string('NANOAOD'),
         filterName = cms.untracked.string('')
     ),
-    fileName = cms.untracked.string('file:configs/NanoV8Data.root'),
+    fileName = cms.untracked.string('file:NanoV8Data.root'),
     outputCommands = process.NANOAODEventContent.outputCommands
 )
 

@@ -8,9 +8,8 @@ if [[ $# -lt 1 ]]; then
 fi
 
 das_name=$1
-outfile=${outfile}.root
 config_name=configs/${2}_cfg.py
-outfile=configs/${2}.root
+outfile=${2}.root
 nevents=1000
 
 cmsDriver.py RECO --conditions 106X_mcRun2_asymptotic_v15 --customise Configuration/DataProcessing/Utils.addMonitoring \
