@@ -1,9 +1,12 @@
-#!/bin/usr/python3
+#!/usr/bin/env python3
 
 import argparse
 import os
 import subprocess
 import string
+import logging
+import hashlib
+
 
 def fillTemplatedFile(template_file_name, out_file_name, template_dict):
     with open(template_file_name, "r") as templateFile:
@@ -12,40 +15,70 @@ def fillTemplatedFile(template_file_name, out_file_name, template_dict):
     with open(out_file_name, "w") as outFile:
         outFile.write(result)
 
+def nameFromInput(das_path):
+    if not "MINIAODSIM" in das_path:
+        return "Data"
+    if "APV" in das_path:
+        return "MCPreVFP"
+    return "MCPostVFP"
+
+# Crab submit doesn't like names over 100 chars long
+# Replace last 5 characters with hash in case of duplicates after truncation
+def hashedName(name, bits=5):
+    if len(name) < 100:
+        return name
+    
+    h = hashlib.sha256(name).hexdigest()
+    return name[:(100-bits)] + h[:bits]
+
+def makeConfig(path, name, das):
+    subprocess.call([path+"/scripts/make%s.sh" % name, das, name])
+
+def makeSubmitFiles(inputFile, doConfig):
+    path = os.environ['CMSSW_BASE']+"/src/Configuration/WMassNanoProduction"
+
+    if not os.path.isfile(inputFile):
+        raise ValueError("Could not open file %s" % inputFile)
+    inputs = [i.strip() for i in open(inputFile).readlines()]
+
+    if not inputs:
+        raise RuntimeError("The input dataset %s is empty" % input_path)
+
+    era = "NanoV8"
+    configsMade = []
+
+    for i in inputs:
+        name = era+nameFromInput(i)
+        isData = "Data" in name
+        config_name = name+"_cfg.py"
+        config = "/".join([path, "configs", config_name])
+
+        if doConfig and name not in configsMade:
+            makeConfig(path, name, i)
+            configsMade.append(name)
+
+        if not os.path.isfile(config):
+            raise RuntimeError("Config file %s does not exist. Rerun with --makeConfig" % config)
+
+        outname = "_".join(i.split("/")[1:(3 if isData else 2)])
+        if not isData:
+            outname += "_"+nameFromInput(i)
+
+        requestName = hashedName(outname)
+        outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
+        fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
+            outfile, 
+            {"era" : name, "splitting" : "LumiBased" if isData else "FileBased",
+            "name" : requestName, "input" : i, "config" : config_name, "units" : 100 if isData else 4})
+        logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to build config file')
 inputType = parser.add_mutually_exclusive_group()
-inputType.add_argument('--data', action='store_true', help='run over data')
-inputType.add_argument('--mcPreVFP', action='store_true', help='run over data')
-inputType.add_argument('--mcPostVFP', action='store_true', help='run over data')
+inputType.add_argument('-i', '--inputFiles', type=str, nargs='*', help='inputFiles to process')
 args = parser.parse_args()
 
-era = "NanoV8"
-path = os.environ['CMSSW_BASE']+"/src/Configuration/WMassNanoProduction"
-datasets = "data.txt"
-name = era+"Data"
+logging.basicConfig(level=logging.INFO)
 
-if args.mcPreVFP:
-    name = era+"PreVFP"
-    datasets = "preVFPMC.txt"
-elif args.mcPostVFP:
-    name = era+"PostVFP"
-    datasets = "postVFPMC.txt"
-
-input_path = "/".join([path, "inputs", datasets])
-inputs = open(input_path).readlines()
-if not inputs:
-    raise RuntimeError("The input dataset %s is empty" % input_path)
-
-if args.makeConfig:
-    subprocess.call([path+"/scripts/make%s.sh" % era, inputs[0], name])
-config = "/".join([path, "configs", era+name+"_cfg.py"])
-
-for i in inputs:
-    outname = "_".join(i.split("/")[1:(3 if args.data else 2)])
-    outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
-    fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
-        outfile, 
-        {"era" : era, "splitting" : "LumiBased" if args.data else "FileBased",
-           "name" : name, "input" : i, "config" : config, "units" : 100 if args.data else 4})
-    print("Wrote config file", "/".join(outfile.split("/")[-2:]))
+for i in args.inputFiles:
+    makeSubmitFiles(i, args.makeConfig)
