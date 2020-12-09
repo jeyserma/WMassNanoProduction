@@ -10,6 +10,7 @@ config.JobType.numCores = 4
 config.JobType.maxMemoryMB = 8000
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '../configs/NanoV8Data_cfg.py'
+config.JobType.allowUndistributedCMSSW = True
 
 config.Data.inputDataset = '/SingleMuon/Run2016C-21Feb2020_UL2016_HIPM-v1/MINIAOD'
 

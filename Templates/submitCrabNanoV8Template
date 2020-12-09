@@ -10,6 +10,7 @@ config.JobType.numCores = 4
 config.JobType.maxMemoryMB = 8000
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '../configs/${config}'
+config.JobType.allowUndistributedCMSSW = True
 
 config.Data.inputDataset = '${input}'
 
