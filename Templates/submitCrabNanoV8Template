@@ -1,0 +1,22 @@
+from CRABClient.UserUtilities import config
+config = config()
+
+config.General.requestName = '${name}'
+config.General.workArea = 'crab_projects'
+config.General.transferOutputs = True
+config.General.transferLogs = True
+
+config.JobType.numCores = 4
+config.JobType.maxMemoryMB = 8000
+config.JobType.pluginName = 'Analysis'
+config.JobType.psetName = '../configs/${config}'
+
+config.Data.inputDataset = '${input}'
+
+config.Data.splitting = '${splitting}'
+config.Data.unitsPerJob = ${units}
+config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
+config.Data.publication = True
+config.Data.outputDatasetTag = '${era}'
+
+config.Site.storageSite = 'T2_CH_CERN'
