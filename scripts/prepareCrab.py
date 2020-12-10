@@ -6,7 +6,9 @@ import subprocess
 import string
 import logging
 import hashlib
-
+import getpass
+import sys
+import datetime
 
 def fillTemplatedFile(template_file_name, out_file_name, template_dict):
     with open(template_file_name, "r") as templateFile:
@@ -22,6 +24,15 @@ def nameFromInput(das_path):
         return "MCPreVFP"
     return "MCPostVFP"
 
+def gitHash(path):
+    return subprocess.check_output(['git', 'log', '-1', '--format="%H"'], cwd=path).decode('UTF-8')
+
+def gitDiff(path):
+    return subprocess.check_output(['git', 'diff',], cwd=path).decode('UTF-8')
+
+def scriptCall():
+    return ' '.join(sys.argv)
+
 # Crab submit doesn't like names over 100 chars long
 # Replace last 5 characters with hash in case of duplicates after truncation
 def hashedName(name, bits=5):
@@ -34,15 +45,42 @@ def hashedName(name, bits=5):
 def makeConfig(path, name, das, nThreads):
     subprocess.call([path+"/scripts/make%s.sh" % name, das, name, str(nThreads)])
 
-def makeSubmitFiles(inputFile, nThreads, submit, doConfig):
-    path = os.environ['CMSSW_BASE']+"/src/Configuration/WMassNanoProduction"
+def submitCrab(outfile, history_file, dryRun):
+    submit_dir = os.chdir("/".join(outfile.split("/")[:-1]))
+    command = ["crab", "submit", outfile]
+    if dryRun:
+        command.insert(0, "echo")
+    out = subprocess.check_output(command, cwd = submit_dir).decode("UTF-8")
+    sys.stdout.write(out)
+    with open(history_file, "a") as f:
+        f.write(out)
 
+def writeHistory(path, history_file, inputFile):
+    cmssw_dir = os.environ["CMSSW_BASE"]+"/src"
+    with open(history_file, "w") as f:
+        f.write("Submit log for inputs: %s\n" % inputFile)
+        f.write("Auto-generated with command %s\n" % scriptCall())
+        f.write("Script ran at %s\n" % str(datetime.datetime.now()))
+        f.write("Git hash of scripts is %s\n" % gitHash(path))
+        f.write("Git hash of CMSSW is \n%s\n" % gitHash(cmssw_dir))
+        f.write("Git diff of scripts is \n%s\n" % gitDiff(path))
+        f.write("    Git diff of CMSSW is %s\n" % gitDiff(cmssw_dir))
+        f.write("-"*80+"\n")
+
+def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
+    path = os.environ['CMSSW_BASE']+"/src/Configuration/WMassNanoProduction"
     if not os.path.isfile(inputFile):
         raise ValueError("Could not open file %s" % inputFile)
     inputs = [i.strip() for i in open(inputFile).readlines()]
 
     if not inputs:
         raise RuntimeError("The input dataset %s is empty" % input_path)
+    
+    fname = inputFile.split("/")[-1].split(".")[0]
+    date =  datetime.datetime.now().strftime("%y_%m_%d")
+    history_file = "/".join([path, "history","_".join([fname, date, getpass.getuser()+".txt"])])
+    if submit[0] != 0:
+        writeHistory(path, history_file, inputFile)
 
     era = "NanoV8"
 
@@ -72,11 +110,10 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig):
                 "input" : das, "config" : config_name, "units" : 100 if isData else 4})
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
         if submit[0] > 1 and i % submit[0] == (submit[1]-1):
-            submit_dir = os.chdir("/".join(outfile.split("/")[:-1]))
-            print(submit_dir)
-            subprocess.call(["crab", "submit", outfile], cwd = submit_dir)
+            submitCrab(outfile, history_file, dryRun)
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--dryRun', action='store_true', help='print submit commands rather than executing them')
 parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to build config file')
 parser.add_argument('-i', '--inputFiles', type=str, nargs='*', help='inputFiles to process')
 parser.add_argument('-s', '--submit', type=int, nargs=2, help='Number of splits to make, which split to submit' \
@@ -92,5 +129,5 @@ logging.basicConfig(level=logging.INFO)
 
 configsMade = []
 for i in args.inputFiles:
-    makeSubmitFiles(i, 4, args.submit, args.makeConfig)
+    makeSubmitFiles(i, 4, args.submit, args.makeConfig, args.dryRun)
 
