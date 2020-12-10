@@ -14,4 +14,4 @@ Will make all the crab submit files for the data samples in that text file. add 
 
 Add ```--submit X Y``` to split the submission into X pieces and submit every Y sample. For example, to divide production between 3 people, ./scripts/prepareCrab.py inputs/data.txt --submit 3 i for i = 1,2,3 for the 3 different people.
 
-After you submit, a file named history/<dataset>_<date>_<submitArgs>_<username>.txt is created. Commit this back to this repo for bookkeeping.
+After you submit, a file named ```history/<dataset>_<date>_<submitArgs>_<username>.txt``` is created. Commit this back to this repo for bookkeeping.
