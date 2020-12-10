@@ -50,10 +50,16 @@ def submitCrab(outfile, history_file, dryRun):
     command = ["crab", "submit", outfile]
     if dryRun:
         command.insert(0, "echo")
-    out = subprocess.check_output(command, cwd = submit_dir).decode("UTF-8")
-    sys.stdout.write(out)
+    output = ["\nRunning command: %s" % " ".join(command)]
+    try:
+        out = subprocess.check_output(command, cwd = submit_dir).decode("UTF-8")
+        sys.stdout.write(out)
+    except subprocess.CalledProcessError as e:
+        out = "--> Failed to submit file %s" % outfile
+        logging.warning(out)
+    output.append(out)
     with open(history_file, "a") as f:
-        f.write(out)
+        f.write("\n".join(output))
 
 def writeHistory(path, history_file, inputFile):
     cmssw_dir = os.environ["CMSSW_BASE"]+"/src"
@@ -61,10 +67,10 @@ def writeHistory(path, history_file, inputFile):
         f.write("Submit log for inputs: %s\n" % inputFile)
         f.write("Auto-generated with command %s\n" % scriptCall())
         f.write("Script ran at %s\n" % str(datetime.datetime.now()))
-        f.write("Git hash of scripts is %s\n" % gitHash(path))
-        f.write("Git hash of CMSSW is \n%s\n" % gitHash(cmssw_dir))
+        f.write("Git hash of scripts is %s" % gitHash(path))
+        f.write("Git hash of CMSSW is %s\n" % gitHash(cmssw_dir))
         f.write("Git diff of scripts is \n%s\n" % gitDiff(path))
-        f.write("    Git diff of CMSSW is %s\n" % gitDiff(cmssw_dir))
+        f.write("Git diff of CMSSW is \n%s\n" % gitDiff(cmssw_dir))
         f.write("-"*80+"\n")
 
 def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
