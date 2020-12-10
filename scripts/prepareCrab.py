@@ -71,7 +71,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig):
                 "threads" : nThreads, "memory" : nThreads*2000, "name" : requestName, 
                 "input" : das, "config" : config_name, "units" : 100 if isData else 4})
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
-        if submit[0] > 1 and i % submit[0] == submit[1]:
+        if submit[0] > 1 and i % submit[0] == (submit[1]-1):
             submit_dir = os.chdir("/".join(outfile.split("/")[:-1]))
             print(submit_dir)
             subprocess.call(["crab", "submit", outfile], cwd = submit_dir)
