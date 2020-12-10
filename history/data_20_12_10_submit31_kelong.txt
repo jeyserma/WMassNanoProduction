@@ -1,0 +1,47 @@
+Submit log for inputs: inputs/data.txt
+Auto-generated with command ./scripts/prepareCrab.py -i inputs/data.txt --submit 3 1
+Script ran at 2020-12-10 13:12:07.387189
+Git hash of scripts is "bdd252c3387ce78591e91824a96ae5aa024b592b"
+Git hash of CMSSW is "6bf1a8aabb659adfcd70533a421b383ca68ff50a"
+
+Git diff of scripts is 
+
+Git diff of CMSSW is 
+
+--------------------------------------------------------------------------------
+
+Running command: crab submit /home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitSingleMuon_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1.py
+Will use CRAB configuration file /home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitSingleMuon_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1.py
+Importing CMSSW configuration ../configs/NanoV8Data_cfg.py
+Finished importing CMSSW configuration ../configs/NanoV8Data_cfg.py
+You are requesting more than 1 core per job. Please make sure that your multi-threaded code is thread-safe and CPU-efficient, and request the correct amount of memory since the default 'maxMemoryMB' value is meant for single core jobs.
+Sending the request to the server at cmsweb.cern.ch
+Success: Your task has been delivered to the prod CRAB3 server.
+Task name: 201210_121231:kelong_crab_SingleMuon_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1
+Project dir: crab_projects/crab_SingleMuon_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1
+Please use ' crab status -d crab_projects/crab_SingleMuon_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1 ' to check how the submission process proceeds.
+Log file is /home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_SingleMuon_Run2016B-21Feb2020_ver2_UL2016_HIPM-v1/crab.log
+
+Running command: crab submit /home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitSingleMuon_Run2016E-21Feb2020_UL2016_HIPM-v1.py
+Will use CRAB configuration file /home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitSingleMuon_Run2016E-21Feb2020_UL2016_HIPM-v1.py
+Importing CMSSW configuration ../configs/NanoV8Data_cfg.py
+Finished importing CMSSW configuration ../configs/NanoV8Data_cfg.py
+You are requesting more than 1 core per job. Please make sure that your multi-threaded code is thread-safe and CPU-efficient, and request the correct amount of memory since the default 'maxMemoryMB' value is meant for single core jobs.
+Sending the request to the server at cmsweb.cern.ch
+Success: Your task has been delivered to the prod CRAB3 server.
+Task name: 201210_121246:kelong_crab_SingleMuon_Run2016E-21Feb2020_UL2016_HIPM-v1
+Project dir: crab_projects/crab_SingleMuon_Run2016E-21Feb2020_UL2016_HIPM-v1
+Please use ' crab status -d crab_projects/crab_SingleMuon_Run2016E-21Feb2020_UL2016_HIPM-v1 ' to check how the submission process proceeds.
+Log file is /home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_SingleMuon_Run2016E-21Feb2020_UL2016_HIPM-v1/crab.log
+
+Running command: crab submit /home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitSingleMuon_Run2016G-21Feb2020_UL2016-v1.py
+Will use CRAB configuration file /home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitSingleMuon_Run2016G-21Feb2020_UL2016-v1.py
+Importing CMSSW configuration ../configs/NanoV8Data_cfg.py
+Finished importing CMSSW configuration ../configs/NanoV8Data_cfg.py
+You are requesting more than 1 core per job. Please make sure that your multi-threaded code is thread-safe and CPU-efficient, and request the correct amount of memory since the default 'maxMemoryMB' value is meant for single core jobs.
+Sending the request to the server at cmsweb.cern.ch
+Success: Your task has been delivered to the prod CRAB3 server.
+Task name: 201210_121304:kelong_crab_SingleMuon_Run2016G-21Feb2020_UL2016-v1
+Project dir: crab_projects/crab_SingleMuon_Run2016G-21Feb2020_UL2016-v1
+Please use ' crab status -d crab_projects/crab_SingleMuon_Run2016G-21Feb2020_UL2016-v1 ' to check how the submission process proceeds.
+Log file is /home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_SingleMuon_Run2016G-21Feb2020_UL2016-v1/crab.log
