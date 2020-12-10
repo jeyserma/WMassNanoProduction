@@ -34,7 +34,7 @@ def hashedName(name, bits=5):
 def makeConfig(path, name, das, nThreads):
     subprocess.call([path+"/scripts/make%s.sh" % name, das, name, str(nThreads)])
 
-def makeSubmitFiles(inputFile, nThreads, doConfig):
+def makeSubmitFiles(inputFile, nThreads, submit, doConfig):
     path = os.environ['CMSSW_BASE']+"/src/Configuration/WMassNanoProduction"
 
     if not os.path.isfile(inputFile):
@@ -46,22 +46,22 @@ def makeSubmitFiles(inputFile, nThreads, doConfig):
 
     era = "NanoV8"
 
-    for i in inputs:
-        name = era+nameFromInput(i)
+    for i, das in enumerate(inputs):
+        name = era+nameFromInput(das)
         isData = "Data" in name
         config_name = name+"_cfg.py"
         config = "/".join([path, "configs", config_name])
 
         if doConfig and name not in configsMade:
-            makeConfig(path, name, i, nThreads)
+            makeConfig(path, name, das, nThreads)
             configsMade.append(name)
 
         if not os.path.isfile(config):
             raise RuntimeError("Config file %s does not exist. Rerun with --makeConfig" % config)
 
-        outname = "_".join(i.split("/")[1:(3 if isData else 2)])
+        outname = "_".join(das.split("/")[1:(3 if isData else 2)])
         if not isData:
-            outname += "_"+nameFromInput(i)
+            outname += "_"+nameFromInput(das)
 
         requestName = hashedName(outname)
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
@@ -69,19 +69,28 @@ def makeSubmitFiles(inputFile, nThreads, doConfig):
             outfile, 
             {"era" : name, "splitting" : "LumiBased" if isData else "FileBased", 
                 "threads" : nThreads, "memory" : nThreads*2000, "name" : requestName, 
-                "input" : i, "config" : config_name, "units" : 100 if isData else 4})
+                "input" : das, "config" : config_name, "units" : 100 if isData else 4})
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
+        if submit[0] > 1 and i % submit[0] == submit[1]:
+            submit_dir = os.chdir("/".join(outfile.split("/")[:-1]))
+            print(submit_dir)
+            subprocess.call(["crab", "submit", outfile], cwd = submit_dir)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to build config file')
-inputType = parser.add_mutually_exclusive_group()
-inputType.add_argument('-i', '--inputFiles', type=str, nargs='*', help='inputFiles to process')
-inputType.add_argument('-j', '--nThreads', type=int, default=4, 
+parser.add_argument('-i', '--inputFiles', type=str, nargs='*', help='inputFiles to process')
+parser.add_argument('-s', '--submit', type=int, nargs=2, help='Number of splits to make, which split to submit' \
+        ' ex: 1 1 for all, 2 1 for every second file', default=(0,0))
+parser.add_argument('-j', '--nThreads', type=int, default=4, 
     help="number of threads (make sure its consistent if you're not regenerating configs)")
 args = parser.parse_args()
+if args.submit[1] > args.submit[0] or (args.submit[1] == 0 and args.submit[1] != args.submit[0]):
+    raise ValueError("Second argument of --submit must be non-zero and less than first argument. " \
+                        " Instead found %i %i" % args.submit)
 
 logging.basicConfig(level=logging.INFO)
 
 configsMade = []
 for i in args.inputFiles:
-    makeSubmitFiles(i, 4, args.makeConfig)
+    makeSubmitFiles(i, 4, args.submit, args.makeConfig)
+
