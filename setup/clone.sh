@@ -1,5 +1,6 @@
 #/bin/bash
 set -e
+export SCRAM_ARCH=slc7_amd64_gcc700
 cmssw=CMSSW_10_6_19_patch2
 scramv1 project $cmssw
 cd $cmssw/src
