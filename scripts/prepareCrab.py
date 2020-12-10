@@ -84,7 +84,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
     
     fname = inputFile.split("/")[-1].split(".")[0]
     date =  datetime.datetime.now().strftime("%y_%m_%d")
-    history_file = "/".join([path, "history","_".join([fname, date, getpass.getuser()+".txt"])])
+    history_file = "/".join([path, "history","_".join([fname, date, "{2}_submit{0}{1}.txt".format(*submit, getpass.getuser())])])
     if submit[0] != 0:
         writeHistory(path, history_file, inputFile)
 
