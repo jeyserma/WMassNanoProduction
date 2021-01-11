@@ -42,8 +42,9 @@ def hashedName(name, bits=5):
     h = hashlib.sha256(name).hexdigest()
     return name[:(100-bits)] + h[:bits]
 
-def makeConfig(path, name, das, nThreads):
-    subprocess.call([path+"/scripts/make%s.sh" % name, das, name, str(nThreads)])
+def makeConfig(path, name, config_name, das, nThreads):
+    print([path+"/scripts/make%s.sh" % name, *das.split(" "), config_name, str(nThreads)])
+    subprocess.call(["./scripts/make%s.sh" % name, *das.split(" "), config_name, str(nThreads)], cwd=path)
 
 def submitCrab(outfile, history_file, dryRun):
     submit_dir = os.chdir("/".join(outfile.split("/")[:-1]))
@@ -77,7 +78,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
     path = os.environ['CMSSW_BASE']+"/src/Configuration/WMassNanoProduction"
     if not os.path.isfile(inputFile):
         raise ValueError("Could not open file %s" % inputFile)
-    inputs = [i.strip() for i in open(inputFile).readlines()]
+    inputs = filter(lambda x: x[0] != "#", [i.strip() for i in open(inputFile).readlines()])
 
     if not inputs:
         raise RuntimeError("The input dataset %s is empty" % input_path)
@@ -93,15 +94,16 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
     for i, das in enumerate(inputs):
         name = era+nameFromInput(das)
         isData = "Data" in name
-        config_name = name+"_cfg.py"
-        config = "/".join([path, "configs", config_name])
+        config_name = name if len(das.split(" ")) == 1 else name+"_weightFix"
 
-        if doConfig and name not in configsMade:
-            makeConfig(path, name, das, nThreads)
-            configsMade.append(name)
+        if doConfig and config_name not in configsMade:
+            makeConfig(path, name, config_name, das, nThreads)
+            configsMade.append(config_name)
 
-        if not os.path.isfile(config):
-            raise RuntimeError("Config file %s does not exist. Rerun with --makeConfig" % config)
+        config_name += "_cfg.py"
+        config_path = "/".join([path, "configs", config_name])
+        if not os.path.isfile(config_path):
+            raise RuntimeError("Config file %s does not exist. Rerun with --makeConfig" % config_path)
 
         outname = "_".join(das.split("/")[1:(3 if isData else 2)])
         if not isData:

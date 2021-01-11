@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: RECO --conditions 106X_mcRun2_asymptotic_preVFP_v9 --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --filein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAODAPV-106X_mcRun2_asymptotic_preVFP_v8-v2/MINIAODSIM --fileout file:NanoV8MCPreVFP.root --nThreads 4 --no_exec --python_filename configs/NanoV8MCPreVFP_cfg.py --scenario pp --step NANO --data
+# with command line options: RECO --conditions 106X_mcRun2_asymptotic_preVFP_v9 --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --filein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights-883f8224005bb85ca71ea2ca271fa8bd/USER --fileout file:NanoV8MCPreVFP.root --nThreads 4 --no_exec --python_filename configs/NanoV8MCPreVFP_cfg.py --scenario pp --step NANO -n 1000 --secondfilein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAODAPV-106X_mcRun2_asymptotic_preVFP_v8-v2/MINIAODSIM
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run2_2016_cff import Run2_2016
@@ -15,19 +15,21 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
+process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
-process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
+process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('PhysicsTools.NanoAOD.nano_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1)
+    input = cms.untracked.int32(1000)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring( (
+    fileNames = cms.untracked.vstring(),
+    secondaryFileNames = cms.untracked.vstring( (
         '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/00000/01225148-F282-B947-AE2B-75AD5DEC3891.root', 
         '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/00000/01882E91-C6F6-F84A-9303-759D5C8E14C7.root', 
         '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/00000/028EDAE2-7471-804E-814A-5EFBB8578058.root', 
@@ -2051,8 +2053,7 @@ process.source = cms.Source("PoolSource",
         '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/240000/FF84BAB6-D751-C542-B4EB-B52A832C985C.root', 
         '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/240000/FF98AB85-8E0B-D944-8B5C-CC2975177771.root', 
         '/store/mc/RunIISummer20UL16MiniAODAPV/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/MINIAODSIM/106X_mcRun2_asymptotic_preVFP_v8-v2/240000/FFC60366-915E-BE42-9052-5396DA879B15.root'
-     ) ),
-    secondaryFileNames = cms.untracked.vstring()
+     ) )
 )
 
 process.options = cms.untracked.PSet(
@@ -2061,7 +2062,7 @@ process.options = cms.untracked.PSet(
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('RECO nevts:1'),
+    annotation = cms.untracked.string('RECO nevts:1000'),
     name = cms.untracked.string('Applications'),
     version = cms.untracked.string('$Revision: 1.19 $')
 )
@@ -2103,10 +2104,10 @@ process.options.numberOfConcurrentLuminosityBlocks=cms.untracked.uint32(1)
 # customisation of the process.
 
 # Automatic addition of the customisation function from PhysicsTools.NanoAOD.nano_cff
-from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeData 
+from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC 
 
-#call to customisation function nanoAOD_customizeData imported from PhysicsTools.NanoAOD.nano_cff
-process = nanoAOD_customizeData(process)
+#call to customisation function nanoAOD_customizeMC imported from PhysicsTools.NanoAOD.nano_cff
+process = nanoAOD_customizeMC(process)
 
 # Automatic addition of the customisation function from Configuration.DataProcessing.Utils
 from Configuration.DataProcessing.Utils import addMonitoring 
