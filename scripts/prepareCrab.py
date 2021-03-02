@@ -94,7 +94,12 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
     for i, das in enumerate(inputs):
         name = era+nameFromInput(das)
         isData = "Data" in name
-        config_name = name if len(das.split(" ")) == 1 else name+"_weightFix"
+        config_name = name 
+        das_split = das.split(" ")
+        das_fill = das
+        if len(das_split) > 1:
+            config_name += "_weightFix"
+            das_fill = "{0}'\nconfig.Data.secondaryInputDataset = '{1}".format(*das_split)
 
         if doConfig and config_name not in configsMade:
             makeConfig(path, name, config_name, das, nThreads)
@@ -115,7 +120,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
             outfile, 
             {"era" : name, "splitting" : "LumiBased" if isData else "FileBased", 
                 "threads" : nThreads, "memory" : nThreads*2000, "name" : requestName, 
-                "input" : das, "config" : config_name, "units" : 100 if isData else 4})
+                "input" : das_fill, "config" : config_name, "units" : 100 if isData else 4})
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
         if submit[0] > 1 and i % submit[0] == (submit[1]-1):
             submitCrab(outfile, history_file, dryRun)
