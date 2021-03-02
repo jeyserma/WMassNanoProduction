@@ -21,8 +21,9 @@ fi
 config_name=configs/${name}_cfg.py
 outfile=${name}.root
 
-cmsDriver.py RECO --conditions 106X_mcRun2_asymptotic_v15 --customise Configuration/DataProcessing/Utils.addMonitoring \
+cmsDriver.py RECO --conditions 106X_mcRun2_asymptotic_v15 \
     --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD \
+    --customise Configuration/DataProcessing/Utils.addMonitoring,PhysicsTools/NanoAOD/nano_cff.nanoGenWmassCustomize \
     --filein dbs:$das_name --fileout file:$outfile --nThreads $nThreads --no_exec \
     --python_filename $config_name --mc \
     --scenario pp --step NANO -n $nevents $secondary

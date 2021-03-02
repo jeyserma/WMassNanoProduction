@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: RECO --conditions 106X_mcRun2_asymptotic_preVFP_v9 --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --filein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights_APVpreVFP-883f8224005bb85ca71ea2ca271fa8bd/USER --fileout file:NanoV8MCPreVFP_weightFix.root --nThreads 4 --no_exec --python_filename configs/NanoV8MCPreVFP_weightFix_cfg.py --mc --scenario pp --step NANO -n 1000 --secondfilein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAODAPV-106X_mcRun2_asymptotic_preVFP_v8-v2/MINIAODSIM
+# with command line options: RECO --conditions 106X_mcRun2_asymptotic_preVFP_v9 --customise Configuration/DataProcessing/Utils.addMonitoring,PhysicsTools/NanoAOD/nano_cff.nanoGenWmassCustomize --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --filein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights_APVpreVFP-883f8224005bb85ca71ea2ca271fa8bd/USER --fileout file:NanoV8MCPreVFP_weightFix.root --nThreads 4 --no_exec --python_filename configs/NanoV8MCPreVFP_weightFix_cfg.py --mc --scenario pp --step NANO -n 1000 --secondfilein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAODAPV-106X_mcRun2_asymptotic_preVFP_v8-v2/MINIAODSIM
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run2_2016_cff import Run2_2016
@@ -2104,10 +2104,13 @@ process.options.numberOfConcurrentLuminosityBlocks=cms.untracked.uint32(1)
 # customisation of the process.
 
 # Automatic addition of the customisation function from PhysicsTools.NanoAOD.nano_cff
-from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC 
+from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeMC,nanoGenWmassCustomize 
 
 #call to customisation function nanoAOD_customizeMC imported from PhysicsTools.NanoAOD.nano_cff
 process = nanoAOD_customizeMC(process)
+
+#call to customisation function nanoGenWmassCustomize imported from PhysicsTools.NanoAOD.nano_cff
+process = nanoGenWmassCustomize(process)
 
 # Automatic addition of the customisation function from Configuration.DataProcessing.Utils
 from Configuration.DataProcessing.Utils import addMonitoring 
