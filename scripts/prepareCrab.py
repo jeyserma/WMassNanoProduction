@@ -120,7 +120,9 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
             outfile, 
             {"era" : name, "splitting" : "LumiBased" if isData else "FileBased", 
                 "threads" : nThreads, "memory" : nThreads*2000, "name" : requestName, 
-                "input" : das_fill, "config" : config_name, "units" : 100 if isData else 4})
+                "input" : das_fill, "config" : config_name, "units" : 100 if isData else 4,
+                "dbs" : "global" if len(das_split) == 1 else "phys03"
+            })
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
         if submit[0] > 1 and i % submit[0] == (submit[1]-1):
             submitCrab(outfile, history_file, dryRun)

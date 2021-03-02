@@ -19,5 +19,6 @@ config.Data.unitsPerJob = ${units}
 config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
 config.Data.publication = True
 config.Data.outputDatasetTag = '${era}'
+config.Data.inputDBS = '${dbs}'
 
 config.Site.storageSite = 'T2_CH_CERN'
