@@ -13,7 +13,6 @@ config.JobType.psetName = '../configs/NanoV8MCPostVFP_weightFix_cfg.py'
 config.JobType.allowUndistributedCMSSW = True
 
 config.Data.inputDataset = '/DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights-cc94a1847acdc455d120f750cf354187/USER'
-config.Data.secondaryInputDataset = '/DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAOD-106X_mcRun2_asymptotic_v13-v2/MINIAODSIM'
 
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 4
@@ -21,5 +20,6 @@ config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD
 config.Data.publication = True
 config.Data.outputDatasetTag = 'NanoV8MCPostVFP'
 config.Data.inputDBS = 'phys03'
+config.Data.useParent = True
 
 config.Site.storageSite = 'T2_CH_CERN'

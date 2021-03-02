@@ -96,10 +96,8 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
         isData = "Data" in name
         config_name = name 
         das_split = das.split(" ")
-        das_fill = das
         if len(das_split) > 1:
             config_name += "_weightFix"
-            das_fill = "{0}'\nconfig.Data.secondaryInputDataset = '{1}".format(*das_split)
 
         if doConfig and config_name not in configsMade:
             makeConfig(path, name, config_name, das, nThreads)
@@ -114,14 +112,16 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
         if not isData:
             outname += "_"+nameFromInput(das)
 
+        das = das_split[0]
         requestName = hashedName(outname)
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
         fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
             outfile, 
             {"era" : name, "splitting" : "LumiBased" if isData else "FileBased", 
                 "threads" : nThreads, "memory" : nThreads*2000, "name" : requestName, 
-                "input" : das_fill, "config" : config_name, "units" : 100 if isData else 4,
-                "dbs" : "global" if len(das_split) == 1 else "phys03"
+                "input" : das, "config" : config_name, "units" : 100 if isData else 4,
+                "dbs" : "global" if len(das_split) == 1 else "phys03",
+                "useParent" : "False" if len(das_split) == 1 else "True"
             })
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
         if submit[0] > 1 and i % submit[0] == (submit[1]-1):
