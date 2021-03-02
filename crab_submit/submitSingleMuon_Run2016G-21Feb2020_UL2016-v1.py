@@ -19,5 +19,7 @@ config.Data.unitsPerJob = 100
 config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
 config.Data.publication = True
 config.Data.outputDatasetTag = 'NanoV8Data'
+config.Data.inputDBS = 'global'
+config.Data.useParent = False
 
 config.Site.storageSite = 'T2_CH_CERN'
