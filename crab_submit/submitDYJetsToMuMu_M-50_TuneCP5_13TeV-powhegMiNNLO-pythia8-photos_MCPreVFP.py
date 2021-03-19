@@ -23,6 +23,6 @@ config.Data.inputDBS = 'phys03'
 config.Data.useParent = True
 
 config.Site.storageSite = 'T2_CH_CERN'
-config.site.whitelist = ['T2_US_Nebraska']
+config.Site.whitelist = ['T2_US_Nebraska']
 config.section_('Debug')
 config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']

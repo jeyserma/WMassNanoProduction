@@ -56,7 +56,7 @@ def makeWhitelist(das):
         site = r[u'site'][0]
         if (len(whitelist) == 0 or float(str(site[u'block_completion']).strip("%")) > 75) and site[u'kind'] == u'DISK':
             whitelist.append(str(site[u'name']))
-    whitelist_text = f"config.site.whitelist = {whitelist}"
+    whitelist_text = f"config.Site.whitelist = {whitelist}"
     whitelist_text += "\nconfig.section_('Debug')\nconfig.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']"
     return whitelist_text
 
