@@ -15,7 +15,7 @@ config.JobType.allowUndistributedCMSSW = True
 config.Data.inputDataset = '/DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights_APVpreVFP-cc94a1847acdc455d120f750cf354187/USER'
 
 config.Data.splitting = 'FileBased'
-config.Data.unitsPerJob = 4
+config.Data.unitsPerJob = 2
 config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
 config.Data.publication = True
 config.Data.outputDatasetTag = 'NanoV8MCPreVFP'
@@ -23,3 +23,6 @@ config.Data.inputDBS = 'phys03'
 config.Data.useParent = True
 
 config.Site.storageSite = 'T2_CH_CERN'
+config.site.whitelist = ['T1_US_FNAL_Disk']
+config.section_('Debug')
+config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
