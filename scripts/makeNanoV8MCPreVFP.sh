@@ -26,4 +26,5 @@ cmsDriver.py RECO --conditions 106X_mcRun2_asymptotic_preVFP_v9 \
     --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD \
     --filein dbs:$das_name --fileout file:$outfile --nThreads $nThreads --no_exec \
     --python_filename $config_name --mc \
-    --scenario pp --step NANO -n $nevents $secondary
+    --scenario pp --step NANO -n $nevents $secondary \
+    --customise_commands 'process.SiteLocalConfigService=cms.Service("SiteLocalConfigService",overrideSourceCacheHintDir=cms.untracked.string("lazy-download"),)'

@@ -23,4 +23,3 @@ config.Data.inputDBS = '${dbs}'
 config.Data.useParent = ${useParent}
 
 config.Site.storageSite = 'T2_CH_CERN'
-${append}

@@ -127,25 +127,30 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
             outname += "_"+nameFromInput(das)
 
         das = das_split[0]
-        requestName = hashedName(outname)
-        whitelist = makeWhitelist(das if len(das_split) == 1 else das_split[1]) if args.whitelist else ""
+        # To avoid overlaps for datasets split into two
+        requestName = hashedName(outname)+"_%s" % i
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
+        
+        units = 8 if not isData else 100
+        if "Wminus" in das:
+            units = 32
+        elif "Wplus" in das or "DY" in das:
+            units = 16
+
         fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
             outfile, 
             {"era" : name, "splitting" : "LumiBased" if isData else "FileBased", 
                 "threads" : nThreads, "memory" : nThreads*2000, "name" : requestName, 
-                "input" : das, "config" : config_name, "units" : 100 if isData else 2,
+                "input" : das, "config" : config_name, "units" : units,
                 "dbs" : "global" if len(das_split) == 1 else "phys03",
                 "useParent" : "False" if len(das_split) == 1 else "True",
-                "append" : whitelist,
             })
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
-        if submit[0] > 1 and i % submit[0] == (submit[1]-1):
+        if submit[0] >= 1 and i % submit[0] == (submit[1]-1):
             submitCrab(outfile, history_file, dryRun)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dryRun', action='store_true', help='print submit commands rather than executing them')
-parser.add_argument('--whitelist', action='store_true', help='Whitelist site with the MiniAOD')
 parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to build config file')
 parser.add_argument('-i', '--inputFiles', required=True, type=str, nargs='*', help='inputFiles to process')
 parser.add_argument('-s', '--submit', type=int, nargs=2, help='Number of splits to make, which split to submit' \
@@ -161,5 +166,5 @@ logging.basicConfig(level=logging.INFO)
 
 configsMade = []
 for i in args.inputFiles:
-    makeSubmitFiles(i, 4, args.submit, args.makeConfig, args.dryRun)
+    makeSubmitFiles(i, args.nThreads, args.submit, args.makeConfig, args.dryRun)
 
