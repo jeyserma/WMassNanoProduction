@@ -127,8 +127,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
             outname += "_"+nameFromInput(das)
 
         das = das_split[0]
-        # To avoid overlaps for datasets split into two
-        requestName = hashedName(outname)+"_%s" % i
+        requestName = hashedName(outname)
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
         
         units = 8 if not isData else 100
