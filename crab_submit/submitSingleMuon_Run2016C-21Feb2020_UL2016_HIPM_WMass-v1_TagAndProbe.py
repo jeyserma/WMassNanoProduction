@@ -9,7 +9,7 @@ config.General.transferLogs = True
 config.JobType.numCores = 8
 config.JobType.maxMemoryMB = 16000
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = '../configs/NanoV8Data_cfg.py'
+config.JobType.psetName = '../configs/NanoV8DataPreVFP_TagAndProbe_cfg.py'
 config.JobType.allowUndistributedCMSSW = True
 
 config.Data.inputDataset = '/SingleMuon/Run2016C-21Feb2020_UL2016_HIPM_WMass-v1/AOD'
