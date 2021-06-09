@@ -1,0 +1,416 @@
+Submit log for inputs: inputs/dyMC.txt
+Auto-generated with command ./scripts/prepareCrab.py -i inputs/dyMC.txt --submit 2 2 --makeConfig
+Script ran at 2021-03-19 20:04:21.035041
+Git hash of scripts is "78d0bfcbc2bb7dd096d15547e7efc4b70d4f418d"
+Git hash of CMSSW is "1230c724004a15b4760c75ee4c023b27339c2f9c"
+
+Git diff of scripts is 
+diff --git a/Templates/submitCrabNanoV8Template b/Templates/submitCrabNanoV8Template
+index 3cce2a3..9a9f753 100644
+--- a/Templates/submitCrabNanoV8Template
++++ b/Templates/submitCrabNanoV8Template
+@@ -23,4 +23,3 @@ config.Data.inputDBS = '${dbs}'
+ config.Data.useParent = ${useParent}
+ 
+ config.Site.storageSite = 'T2_CH_CERN'
+-${append}
+diff --git a/configs/NanoV8MCPostVFP_weightFix_cfg.py b/configs/NanoV8MCPostVFP_weightFix_cfg.py
+index 866bd06..3ab6992 100644
+--- a/configs/NanoV8MCPostVFP_weightFix_cfg.py
++++ b/configs/NanoV8MCPostVFP_weightFix_cfg.py
+@@ -2,7 +2,7 @@
+ # using: 
+ # Revision: 1.19 
+ # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
+-# with command line options: RECO --conditions 106X_mcRun2_asymptotic_v15 --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --customise Configuration/DataProcessing/Utils.addMonitoring,PhysicsTools/NanoAOD/nano_cff.nanoGenWmassCustomize --filein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights-883f8224005bb85ca71ea2ca271fa8bd/USER --fileout file:NanoV8MCPostVFP_weightFix.root --nThreads 4 --no_exec --python_filename configs/NanoV8MCPostVFP_weightFix_cfg.py --mc --scenario pp --step NANO -n 1000 --secondfilein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAOD-106X_mcRun2_asymptotic_v13-v2/MINIAODSIM
++# with command line options: RECO --conditions 106X_mcRun2_asymptotic_v15 --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --customise Configuration/DataProcessing/Utils.addMonitoring,PhysicsTools/NanoAOD/nano_cff.nanoGenWmassCustomize --filein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights-883f8224005bb85ca71ea2ca271fa8bd/USER --fileout file:NanoV8MCPostVFP_weightFix.root --nThreads 4 --no_exec --python_filename configs/NanoV8MCPostVFP_weightFix_cfg.py --mc --scenario pp --step NANO -n 1000 --secondfilein dbs:/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAOD-106X_mcRun2_asymptotic_v13-v2/MINIAODSIM --customise_commands process.SiteLocalConfigService = cms.Service("SiteLocalConfigService", overrideSourceCacheHintDir = cms.untracked.string("lazy-download"),)
+ import FWCore.ParameterSet.Config as cms
+ 
+ from Configuration.Eras.Era_Run2_2016_cff import Run2_2016
+@@ -1649,6 +1649,7 @@ process = addMonitoring(process)
+ 
+ # Customisation from command line
+ 
++process.SiteLocalConfigService = cms.Service("SiteLocalConfigService", overrideSourceCacheHintDir = cms.untracked.string("lazy-download"),)
+ # Add early deletion of temporary data products to reduce peak memory need
+ from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
+ process = customiseEarlyDelete(process)
+diff --git a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+index e1e8e6f..04a89d9 100644
+--- a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++++ b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+@@ -23,6 +23,3 @@ config.Data.inputDBS = 'phys03'
+ config.Data.useParent = True
+ 
+ config.Site.storageSite = 'T2_CH_CERN'
+-config.Site.whitelist = ['T1_US_FNAL_Disk']
+-config.section_('Debug')
+-config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
+diff --git a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+index c0e48f7..c3f5cd7 100644
+--- a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++++ b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+@@ -23,6 +23,3 @@ config.Data.inputDBS = 'phys03'
+ config.Data.useParent = True
+ 
+ config.Site.storageSite = 'T2_CH_CERN'
+-config.Site.whitelist = ['T2_US_Nebraska']
+-config.section_('Debug')
+-config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
+diff --git a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+index 2654069..31abf1b 100644
+--- a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++++ b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+@@ -23,6 +23,3 @@ config.Data.inputDBS = 'phys03'
+ config.Data.useParent = True
+ 
+ config.Site.storageSite = 'T2_CH_CERN'
+-config.Site.whitelist = ['T1_US_FNAL_Disk']
+-config.section_('Debug')
+-config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
+diff --git a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+index 4bec9dc..9a441de 100644
+--- a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++++ b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+@@ -23,6 +23,3 @@ config.Data.inputDBS = 'phys03'
+ config.Data.useParent = True
+ 
+ config.Site.storageSite = 'T2_CH_CERN'
+-config.Site.whitelist = ['T1_US_FNAL_Disk']
+-config.section_('Debug')
+-config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
+diff --git a/history/dyMC_21_03_19_submit21_kelong.txt b/history/dyMC_21_03_19_submit21_kelong.txt
+index 065499d..3c21e24 100644
+--- a/history/dyMC_21_03_19_submit21_kelong.txt
++++ b/history/dyMC_21_03_19_submit21_kelong.txt
+@@ -1,87 +1,202 @@
+ Submit log for inputs: inputs/dyMC.txt
+-Auto-generated with command ./scripts/prepareCrab.py -i inputs/dyMC.txt --submit 2 1 --whitelist
+-Script ran at 2021-03-19 14:34:01.658232
+-Git hash of scripts is "8abad14a1cbd67e9f1308a9b864f398ac20eff30"
++Auto-generated with command ./scripts/prepareCrab.py -i inputs/dyMC.txt --submit 2 1 --dryRun --makeConfig
++Script ran at 2021-03-19 20:02:59.941479
++Git hash of scripts is "78d0bfcbc2bb7dd096d15547e7efc4b70d4f418d"
+ Git hash of CMSSW is "1230c724004a15b4760c75ee4c023b27339c2f9c"
+ 
+ Git diff of scripts is 
++diff --git a/Templates/submitCrabNanoV8Template b/Templates/submitCrabNanoV8Template
++index 3cce2a3..9a9f753 100644
++--- a/Templates/submitCrabNanoV8Template
+++++ b/Templates/submitCrabNanoV8Template
++@@ -23,4 +23,3 @@ config.Data.inputDBS = '${dbs}'
++ config.Data.useParent = ${useParent}
++ 
++ config.Site.storageSite = 'T2_CH_CERN'
++-${append}
+ diff --git a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+-index 9696c74..e1e8e6f 100644
++index e1e8e6f..04a89d9 100644
+ --- a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+ +++ b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+-@@ -23,6 +23,6 @@ config.Data.inputDBS = 'phys03'
++@@ -23,6 +23,3 @@ config.Data.inputDBS = 'phys03'
+  config.Data.useParent = True
+  
+  config.Site.storageSite = 'T2_CH_CERN'
+--config.site.whitelist = ['T1_US_FNAL_Disk']
+-+config.Site.whitelist = ['T1_US_FNAL_Disk']
+- config.section_('Debug')
+- config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
++-config.Site.whitelist = ['T1_US_FNAL_Disk']
++-config.section_('Debug')
++-config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
+ diff --git a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+-index 8534724..c0e48f7 100644
++index c0e48f7..c3f5cd7 100644
+ --- a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+ +++ b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+-@@ -23,6 +23,6 @@ config.Data.inputDBS = 'phys03'
++@@ -23,6 +23,3 @@ config.Data.inputDBS = 'phys03'
+  config.Data.useParent = True
+  
+  config.Site.storageSite = 'T2_CH_CERN'
+--config.site.whitelist = ['T2_US_Nebraska']
+-+config.Site.whitelist = ['T2_US_Nebraska']
+- config.section_('Debug')
+- config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
++-config.Site.whitelist = ['T2_US_Nebraska']
++-config.section_('Debug')
++-config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
+ diff --git a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+-index 85c2b67..2654069 100644
++index 2654069..31abf1b 100644
+ --- a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+ +++ b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+-@@ -23,6 +23,6 @@ config.Data.inputDBS = 'phys03'
++@@ -23,6 +23,3 @@ config.Data.inputDBS = 'phys03'
+  config.Data.useParent = True
+  
+  config.Site.storageSite = 'T2_CH_CERN'
+--config.site.whitelist = ['T1_US_FNAL_Disk']
+-+config.Site.whitelist = ['T1_US_FNAL_Disk']
+- config.section_('Debug')
+- config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
++-config.Site.whitelist = ['T1_US_FNAL_Disk']
++-config.section_('Debug')
++-config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
+ diff --git a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+-index 52a1339..4bec9dc 100644
++index 4bec9dc..9a441de 100644
+ --- a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+ +++ b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+-@@ -23,6 +23,6 @@ config.Data.inputDBS = 'phys03'
++@@ -23,6 +23,3 @@ config.Data.inputDBS = 'phys03'
+  config.Data.useParent = True
+  
+  config.Site.storageSite = 'T2_CH_CERN'
+--config.site.whitelist = ['T1_US_FNAL_Disk']
+-+config.Site.whitelist = ['T1_US_FNAL_Disk']
+- config.section_('Debug')
+- config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
++-config.Site.whitelist = ['T1_US_FNAL_Disk']
++-config.section_('Debug')
++-config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
++diff --git a/history/dyMC_21_03_19_submit21_kelong.txt b/history/dyMC_21_03_19_submit21_kelong.txt
++index 065499d..e69de29 100644
++--- a/history/dyMC_21_03_19_submit21_kelong.txt
+++++ b/history/dyMC_21_03_19_submit21_kelong.txt
++@@ -1,87 +0,0 @@
++-Submit log for inputs: inputs/dyMC.txt
++-Auto-generated with command ./scripts/prepareCrab.py -i inputs/dyMC.txt --submit 2 1 --whitelist
++-Script ran at 2021-03-19 14:34:01.658232
++-Git hash of scripts is "8abad14a1cbd67e9f1308a9b864f398ac20eff30"
++-Git hash of CMSSW is "1230c724004a15b4760c75ee4c023b27339c2f9c"
++-
++-Git diff of scripts is 
++-diff --git a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++-index 9696c74..e1e8e6f 100644
++---- a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++-+++ b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++-@@ -23,6 +23,6 @@ config.Data.inputDBS = 'phys03'
++- config.Data.useParent = True
++- 
++- config.Site.storageSite = 'T2_CH_CERN'
++--config.site.whitelist = ['T1_US_FNAL_Disk']
++-+config.Site.whitelist = ['T1_US_FNAL_Disk']
++- config.section_('Debug')
++- config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
++-diff --git a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++-index 8534724..c0e48f7 100644
++---- a/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++-+++ b/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++-@@ -23,6 +23,6 @@ config.Data.inputDBS = 'phys03'
++- config.Data.useParent = True
++- 
++- config.Site.storageSite = 'T2_CH_CERN'
++--config.site.whitelist = ['T2_US_Nebraska']
++-+config.Site.whitelist = ['T2_US_Nebraska']
++- config.section_('Debug')
++- config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
++-diff --git a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++-index 85c2b67..2654069 100644
++---- a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++-+++ b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++-@@ -23,6 +23,6 @@ config.Data.inputDBS = 'phys03'
++- config.Data.useParent = True
++- 
++- config.Site.storageSite = 'T2_CH_CERN'
++--config.site.whitelist = ['T1_US_FNAL_Disk']
++-+config.Site.whitelist = ['T1_US_FNAL_Disk']
++- config.section_('Debug')
++- config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
++-diff --git a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++-index 52a1339..4bec9dc 100644
++---- a/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++-+++ b/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++-@@ -23,6 +23,6 @@ config.Data.inputDBS = 'phys03'
++- config.Data.useParent = True
++- 
++- config.Site.storageSite = 'T2_CH_CERN'
++--config.site.whitelist = ['T1_US_FNAL_Disk']
++-+config.Site.whitelist = ['T1_US_FNAL_Disk']
++- config.section_('Debug')
++- config.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']
++-diff --git a/scripts/prepareCrab.py b/scripts/prepareCrab.py
++-index 871626c..d584016 100755
++---- a/scripts/prepareCrab.py
++-+++ b/scripts/prepareCrab.py
++-@@ -56,7 +56,7 @@ def makeWhitelist(das):
++-         site = r[u'site'][0]
++-         if (len(whitelist) == 0 or float(str(site[u'block_completion']).strip("%")) > 75) and site[u'kind'] == u'DISK':
++-             whitelist.append(str(site[u'name']))
++--    whitelist_text = f"config.site.whitelist = {whitelist}"
++-+    whitelist_text = f"config.Site.whitelist = {whitelist}"
++-     whitelist_text += "\nconfig.section_('Debug')\nconfig.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']"
++-     return whitelist_text
++- 
++-
++-Git diff of CMSSW is 
++-
++---------------------------------------------------------------------------------
++-
++-Running command: crab submit /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++-Will use CRAB configuration file /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++-Importing CMSSW configuration ../configs/NanoV8MCPreVFP_weightFix_cfg.py
++-Finished importing CMSSW configuration ../configs/NanoV8MCPreVFP_weightFix_cfg.py
++-You are requesting more than 1 core per job. Please make sure that your multi-threaded code is thread-safe and CPU-efficient, and request the correct amount of memory since the default 'maxMemoryMB' value is meant for single core jobs.
++-Sending the request to the server at cmsweb-k8s-prod.cern.ch
++-Success: Your task has been delivered to the prod CRAB3 server.
++-Task name: 210319_133412:kelong_crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP
++-Project dir: crab_projects/crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP
++-Please use ' crab status -d crab_projects/crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP ' to check how the submission process proceeds.
++-Log file is /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP/crab.log
++-
++-Running command: crab submit /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++---> Failed to submit file /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++\ No newline at end of file
++diff --git a/scripts/makeNanoV8MCPostVFP.sh b/scripts/makeNanoV8MCPostVFP.sh
++index 63dbb19..d060e69 100755
++--- a/scripts/makeNanoV8MCPostVFP.sh
+++++ b/scripts/makeNanoV8MCPostVFP.sh
++@@ -26,4 +26,5 @@ cmsDriver.py RECO --conditions 106X_mcRun2_asymptotic_v15 \
++     --customise Configuration/DataProcessing/Utils.addMonitoring,PhysicsTools/NanoAOD/nano_cff.nanoGenWmassCustomize \
++     --filein dbs:$das_name --fileout file:$outfile --nThreads $nThreads --no_exec \
++     --python_filename $config_name --mc \
++-    --scenario pp --step NANO -n $nevents $secondary
+++    --scenario pp --step NANO -n $nevents $secondary \
+++    --customise_commands 'process.SiteLocalConfigService = cms.Service("SiteLocalConfigService", overrideSourceCacheHintDir = cms.untracked.string("lazy-download"),)'
+ diff --git a/scripts/prepareCrab.py b/scripts/prepareCrab.py
+-index 871626c..d584016 100755
++index d584016..292cc90 100755
+ --- a/scripts/prepareCrab.py
+ +++ b/scripts/prepareCrab.py
+-@@ -56,7 +56,7 @@ def makeWhitelist(das):
+-         site = r[u'site'][0]
+-         if (len(whitelist) == 0 or float(str(site[u'block_completion']).strip("%")) > 75) and site[u'kind'] == u'DISK':
+-             whitelist.append(str(site[u'name']))
+--    whitelist_text = f"config.site.whitelist = {whitelist}"
+-+    whitelist_text = f"config.Site.whitelist = {whitelist}"
+-     whitelist_text += "\nconfig.section_('Debug')\nconfig.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']"
+-     return whitelist_text
++@@ -128,7 +128,6 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
++ 
++         das = das_split[0]
++         requestName = hashedName(outname)
++-        whitelist = makeWhitelist(das if len(das_split) == 1 else das_split[1]) if args.whitelist else ""
++         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
++         fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
++             outfile, 
++@@ -137,7 +136,6 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
++                 "input" : das, "config" : config_name, "units" : 100 if isData else 2,
++                 "dbs" : "global" if len(das_split) == 1 else "phys03",
++                 "useParent" : "False" if len(das_split) == 1 else "True",
++-                "append" : whitelist,
++             })
++         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
++         if submit[0] > 1 and i % submit[0] == (submit[1]-1):
++@@ -145,7 +143,6 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
+  
++ parser = argparse.ArgumentParser()
++ parser.add_argument('--dryRun', action='store_true', help='print submit commands rather than executing them')
++-parser.add_argument('--whitelist', action='store_true', help='Whitelist site with the MiniAOD')
++ parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to build config file')
++ parser.add_argument('-i', '--inputFiles', required=True, type=str, nargs='*', help='inputFiles to process')
++ parser.add_argument('-s', '--submit', type=int, nargs=2, help='Number of splits to make, which split to submit' \
+ 
+ Git diff of CMSSW is 
+ 
+ --------------------------------------------------------------------------------
+ 
+-Running command: crab submit /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+-Will use CRAB configuration file /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+-Importing CMSSW configuration ../configs/NanoV8MCPreVFP_weightFix_cfg.py
+-Finished importing CMSSW configuration ../configs/NanoV8MCPreVFP_weightFix_cfg.py
+-You are requesting more than 1 core per job. Please make sure that your multi-threaded code is thread-safe and CPU-efficient, and request the correct amount of memory since the default 'maxMemoryMB' value is meant for single core jobs.
+-Sending the request to the server at cmsweb-k8s-prod.cern.ch
+-Success: Your task has been delivered to the prod CRAB3 server.
+-Task name: 210319_133412:kelong_crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP
+-Project dir: crab_projects/crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP
+-Please use ' crab status -d crab_projects/crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP ' to check how the submission process proceeds.
+-Log file is /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP/crab.log
++Running command: echo crab submit /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
++crab submit /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+ 
+-Running command: crab submit /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+---> Failed to submit file /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+\ No newline at end of file
++Running command: echo crab submit /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++crab submit /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+diff --git a/scripts/makeNanoV8MCPostVFP.sh b/scripts/makeNanoV8MCPostVFP.sh
+index 63dbb19..d060e69 100755
+--- a/scripts/makeNanoV8MCPostVFP.sh
++++ b/scripts/makeNanoV8MCPostVFP.sh
+@@ -26,4 +26,5 @@ cmsDriver.py RECO --conditions 106X_mcRun2_asymptotic_v15 \
+     --customise Configuration/DataProcessing/Utils.addMonitoring,PhysicsTools/NanoAOD/nano_cff.nanoGenWmassCustomize \
+     --filein dbs:$das_name --fileout file:$outfile --nThreads $nThreads --no_exec \
+     --python_filename $config_name --mc \
+-    --scenario pp --step NANO -n $nevents $secondary
++    --scenario pp --step NANO -n $nevents $secondary \
++    --customise_commands 'process.SiteLocalConfigService = cms.Service("SiteLocalConfigService", overrideSourceCacheHintDir = cms.untracked.string("lazy-download"),)'
+diff --git a/scripts/makeNanoV8MCPreVFP.sh b/scripts/makeNanoV8MCPreVFP.sh
+index f92a323..765dbeb 100755
+--- a/scripts/makeNanoV8MCPreVFP.sh
++++ b/scripts/makeNanoV8MCPreVFP.sh
+@@ -26,4 +26,5 @@ cmsDriver.py RECO --conditions 106X_mcRun2_asymptotic_preVFP_v9 \
+     --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD \
+     --filein dbs:$das_name --fileout file:$outfile --nThreads $nThreads --no_exec \
+     --python_filename $config_name --mc \
+-    --scenario pp --step NANO -n $nevents $secondary
++    --scenario pp --step NANO -n $nevents $secondary \
++    --customise_commands 'process.SiteLocalConfigService = cms.Service("SiteLocalConfigService", overrideSourceCacheHintDir = cms.untracked.string("lazy-download"),)'
+diff --git a/scripts/prepareCrab.py b/scripts/prepareCrab.py
+index d584016..292cc90 100755
+--- a/scripts/prepareCrab.py
++++ b/scripts/prepareCrab.py
+@@ -128,7 +128,6 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
+ 
+         das = das_split[0]
+         requestName = hashedName(outname)
+-        whitelist = makeWhitelist(das if len(das_split) == 1 else das_split[1]) if args.whitelist else ""
+         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
+         fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
+             outfile, 
+@@ -137,7 +136,6 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
+                 "input" : das, "config" : config_name, "units" : 100 if isData else 2,
+                 "dbs" : "global" if len(das_split) == 1 else "phys03",
+                 "useParent" : "False" if len(das_split) == 1 else "True",
+-                "append" : whitelist,
+             })
+         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
+         if submit[0] > 1 and i % submit[0] == (submit[1]-1):
+@@ -145,7 +143,6 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
+ 
+ parser = argparse.ArgumentParser()
+ parser.add_argument('--dryRun', action='store_true', help='print submit commands rather than executing them')
+-parser.add_argument('--whitelist', action='store_true', help='Whitelist site with the MiniAOD')
+ parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to build config file')
+ parser.add_argument('-i', '--inputFiles', required=True, type=str, nargs='*', help='inputFiles to process')
+ parser.add_argument('-s', '--submit', type=int, nargs=2, help='Number of splits to make, which split to submit' \
+
+Git diff of CMSSW is 
+
+--------------------------------------------------------------------------------
+
+Running command: crab submit /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+Will use CRAB configuration file /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+Importing CMSSW configuration ../configs/NanoV8MCPostVFP_weightFix_cfg.py
+Finished importing CMSSW configuration ../configs/NanoV8MCPostVFP_weightFix_cfg.py
+You are requesting more than 1 core per job. Please make sure that your multi-threaded code is thread-safe and CPU-efficient, and request the correct amount of memory since the default 'maxMemoryMB' value is meant for single core jobs.
+Sending the request to the server at cmsweb-k8s-prod.cern.ch
+Success: Your task has been delivered to the prod CRAB3 server.
+Task name: 210319_190436:kelong_crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP
+Project dir: crab_projects/crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP
+Please use ' crab status -d crab_projects/crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP ' to check how the submission process proceeds.
+Log file is /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP/crab.log
+
+Running command: crab submit /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+Will use CRAB configuration file /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitDYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP.py
+Importing CMSSW configuration ../configs/NanoV8MCPreVFP_weightFix_cfg.py
+Finished importing CMSSW configuration ../configs/NanoV8MCPreVFP_weightFix_cfg.py
+You are requesting more than 1 core per job. Please make sure that your multi-threaded code is thread-safe and CPU-efficient, and request the correct amount of memory since the default 'maxMemoryMB' value is meant for single core jobs.
+Sending the request to the server at cmsweb-k8s-prod.cern.ch
+Success: Your task has been delivered to the prod CRAB3 server.
+Task name: 210319_190445:kelong_crab_DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP
+Project dir: crab_projects/crab_DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP
+Please use ' crab status -d crab_projects/crab_DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP ' to check how the submission process proceeds.
+Log file is /data/home/kelong/work/mWProd/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP/crab.log

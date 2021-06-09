@@ -15,7 +15,7 @@ config.JobType.allowUndistributedCMSSW = True
 config.Data.inputDataset = '/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights_APVpreVFP-883f8224005bb85ca71ea2ca271fa8bd/USER'
 
 config.Data.splitting = 'FileBased'
-config.Data.unitsPerJob = 4
+config.Data.unitsPerJob = 2
 config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
 config.Data.publication = True
 config.Data.outputDatasetTag = 'NanoV8MCPreVFP'

@@ -9,6 +9,7 @@ import hashlib
 import getpass
 import sys
 import datetime
+import json
 
 def fillTemplatedFile(template_file_name, out_file_name, template_dict):
     with open(template_file_name, "r") as templateFile:
@@ -45,6 +46,19 @@ def hashedName(name, bits=5):
 def makeConfig(path, name, config_name, das, nThreads):
     print([path+"/scripts/make%s.sh" % name, *das.split(" "), config_name, str(nThreads)])
     subprocess.call(["./scripts/make%s.sh" % name, *das.split(" "), config_name, str(nThreads)], cwd=path)
+
+def makeWhitelist(das):
+    out = subprocess.check_output([f'dasgoclient --query="site dataset={das}" -json'], shell=True)
+    res = json.loads(out)
+    sort = sorted(res, key = lambda x: float(str(x[u'site'][0][u'block_completion']).replace("%", "")), reverse=True)
+    whitelist = []
+    for r in sort:
+        site = r[u'site'][0]
+        if (len(whitelist) == 0 or float(str(site[u'block_completion']).strip("%")) > 75) and site[u'kind'] == u'DISK':
+            whitelist.append(str(site[u'name']))
+    whitelist_text = f"config.Site.whitelist = {whitelist}"
+    whitelist_text += "\nconfig.section_('Debug')\nconfig.Debug.extraJDL = ['+CMS_ALLOW_OVERFLOW=False']"
+    return whitelist_text
 
 def submitCrab(outfile, history_file, dryRun):
     submit_dir = os.chdir("/".join(outfile.split("/")[:-1]))
@@ -115,22 +129,29 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
         das = das_split[0]
         requestName = hashedName(outname)
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
+        
+        units = 8 if not isData else 100
+        if "Wminus" in das:
+            units = 32
+        elif "Wplus" in das or "DY" in das:
+            units = 16
+
         fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
             outfile, 
             {"era" : name, "splitting" : "LumiBased" if isData else "FileBased", 
                 "threads" : nThreads, "memory" : nThreads*2000, "name" : requestName, 
-                "input" : das, "config" : config_name, "units" : 100 if isData else 4,
+                "input" : das, "config" : config_name, "units" : units,
                 "dbs" : "global" if len(das_split) == 1 else "phys03",
-                "useParent" : "False" if len(das_split) == 1 else "True"
+                "useParent" : "False" if len(das_split) == 1 else "True",
             })
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
-        if submit[0] > 1 and i % submit[0] == (submit[1]-1):
+        if submit[0] >= 1 and i % submit[0] == (submit[1]-1):
             submitCrab(outfile, history_file, dryRun)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--dryRun', action='store_true', help='print submit commands rather than executing them')
 parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to build config file')
-parser.add_argument('-i', '--inputFiles', type=str, nargs='*', help='inputFiles to process')
+parser.add_argument('-i', '--inputFiles', required=True, type=str, nargs='*', help='inputFiles to process')
 parser.add_argument('-s', '--submit', type=int, nargs=2, help='Number of splits to make, which split to submit' \
         ' ex: 1 1 for all, 2 1 for every second file', default=(0,0))
 parser.add_argument('-j', '--nThreads', type=int, default=4, 
@@ -144,5 +165,5 @@ logging.basicConfig(level=logging.INFO)
 
 configsMade = []
 for i in args.inputFiles:
-    makeSubmitFiles(i, 4, args.submit, args.makeConfig, args.dryRun)
+    makeSubmitFiles(i, args.nThreads, args.submit, args.makeConfig, args.dryRun)
 
