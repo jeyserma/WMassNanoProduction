@@ -1,7 +1,7 @@
 from CRABClient.UserUtilities import config
 config = config()
 
-config.General.requestName = 'WplusJetsToTauNu_TauToMu_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFP'
+config.General.requestName = 'WplusJetsToTauNu_TauToMu_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFPWeightFix'
 config.General.workArea = 'crab_projects'
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -18,7 +18,7 @@ config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 16
 config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
 config.Data.publication = True
-config.Data.outputDatasetTag = 'NanoV8MCPreVFP'
+config.Data.outputDatasetTag = 'WplusJetsToTauNu_TauToMu_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPreVFPWeightFix'
 config.Data.inputDBS = 'phys03'
 config.Data.useParent = True
 
