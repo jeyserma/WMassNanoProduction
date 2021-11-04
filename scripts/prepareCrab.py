@@ -124,7 +124,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
 
         outname = "_".join(das.split("/")[1:(3 if isData else 2)])
         if not isData:
-            outname += "_"+nameFromInput(das)
+            outname += "_"+nameFromInput(das)+"WeightFix"
 
         das = das_split[0]
         requestName = hashedName(outname)
