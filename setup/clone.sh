@@ -7,7 +7,7 @@ cd $cmssw/src
 scramv1 runtime -sh
 git cms-merge-topic WMass:WmassNanoProd_106X
 path=Configuration/WMassNanoProduction
-git clone git@github.com:kdlong/WMassNanoProduction.git $path
+git clone git@github.com:WMass/WMassNanoProduction.git $path
 scram b -j8
 
 cd $path

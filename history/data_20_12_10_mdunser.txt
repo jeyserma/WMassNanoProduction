@@ -1,0 +1,35 @@
+Submit log for inputs: inputs/data.txt
+Auto-generated with command ./scripts/prepareCrab.py -i inputs/data.txt --submit 3 3
+Script ran at 2020-12-10 12:54:07.992272
+Git hash of scripts is "db9c616688855d835406e348ddf81c578d0b3fec"
+Git hash of CMSSW is "b97f587ef09058a316c179b7878f87059314e21b"
+
+Git diff of scripts is 
+
+Git diff of CMSSW is 
+
+--------------------------------------------------------------------------------
+
+Running command: crab submit /afs/cern.ch/work/m/mdunser/public/cmssw/w-mass-13TeV/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitSingleMuon_Run2016D-21Feb2020_UL2016_HIPM-v1.py
+Will use CRAB configuration file /afs/cern.ch/work/m/mdunser/public/cmssw/w-mass-13TeV/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitSingleMuon_Run2016D-21Feb2020_UL2016_HIPM-v1.py
+Importing CMSSW configuration ../configs/NanoV8Data_cfg.py
+Finished importing CMSSW configuration ../configs/NanoV8Data_cfg.py
+You are requesting more than 1 core per job. Please make sure that your multi-threaded code is thread-safe and CPU-efficient, and request the correct amount of memory since the default 'maxMemoryMB' value is meant for single core jobs.
+Sending the request to the server at cmsweb.cern.ch
+Success: Your task has been delivered to the prod CRAB3 server.
+Task name: 201210_115504:mdunser_crab_SingleMuon_Run2016D-21Feb2020_UL2016_HIPM-v1
+Project dir: crab_projects/crab_SingleMuon_Run2016D-21Feb2020_UL2016_HIPM-v1
+Please use ' crab status -d crab_projects/crab_SingleMuon_Run2016D-21Feb2020_UL2016_HIPM-v1 ' to check how the submission process proceeds.
+Log file is /afs/cern.ch/work/m/mdunser/public/cmssw/w-mass-13TeV/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_SingleMuon_Run2016D-21Feb2020_UL2016_HIPM-v1/crab.log
+
+Running command: crab submit /afs/cern.ch/work/m/mdunser/public/cmssw/w-mass-13TeV/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitSingleMuon_Run2016F-21Feb2020_UL2016-v1.py
+Will use CRAB configuration file /afs/cern.ch/work/m/mdunser/public/cmssw/w-mass-13TeV/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/submitSingleMuon_Run2016F-21Feb2020_UL2016-v1.py
+Importing CMSSW configuration ../configs/NanoV8Data_cfg.py
+Finished importing CMSSW configuration ../configs/NanoV8Data_cfg.py
+You are requesting more than 1 core per job. Please make sure that your multi-threaded code is thread-safe and CPU-efficient, and request the correct amount of memory since the default 'maxMemoryMB' value is meant for single core jobs.
+Sending the request to the server at cmsweb.cern.ch
+Success: Your task has been delivered to the prod CRAB3 server.
+Task name: 201210_115521:mdunser_crab_SingleMuon_Run2016F-21Feb2020_UL2016-v1
+Project dir: crab_projects/crab_SingleMuon_Run2016F-21Feb2020_UL2016-v1
+Please use ' crab status -d crab_projects/crab_SingleMuon_Run2016F-21Feb2020_UL2016-v1 ' to check how the submission process proceeds.
+Log file is /afs/cern.ch/work/m/mdunser/public/cmssw/w-mass-13TeV/CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_SingleMuon_Run2016F-21Feb2020_UL2016-v1/crab.log
