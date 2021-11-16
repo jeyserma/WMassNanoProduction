@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: RECO --conditions 106X_dataRun2_v32 --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --filein dbs:/SingleMuon/Run2016B-21Feb2020_ver2_UL2016_HIPM-v1/MINIAOD --fileout file:NanoV8Data.root --nThreads 4 --no_exec --python_filename configs/NanoV8Data_cfg.py --scenario pp --step NANO --data
+# with command line options: RECO --conditions 106X_dataRun2_v32 --customise Configuration/DataProcessing/Utils.addMonitoring --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAOD --geometry DB:Extended --filein dbs:/SingleMuon/Run2016B-21Feb2020_ver2_UL2016_HIPM-v1/MINIAOD --fileout file:NanoV8Data.root --nThreads 1 --no_exec --python_filename configs/NanoV8Data_cfg.py --scenario pp --step NANO --data --customise_commands process.GlobalTag.toGet = cms.VPSet(cms.PSet(record = cms.string("GeometryFileRcd"),tag = cms.string("XMLFILE_Geometry_2016_81YV1_Extended2016_mc"),label = cms.untracked.string("Extended"),),)
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run2_2016_cff import Run2_2016
@@ -16,6 +16,7 @@ process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
+process.load('Configuration.StandardSequences.GeometrySimDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff')
 process.load('PhysicsTools.NanoAOD.nano_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
@@ -1096,6 +1097,7 @@ process.NANOAODoutput = cms.OutputModule("NanoAODOutputModule",
 # Additional output definition
 
 # Other statements
+process.XMLFromDBSource.label = cms.string("Extended")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '106X_dataRun2_v32', '')
 
@@ -1108,11 +1110,6 @@ process.NANOAODoutput_step = cms.EndPath(process.NANOAODoutput)
 process.schedule = cms.Schedule(process.nanoAOD_step,process.endjob_step,process.NANOAODoutput_step)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
-
-#Setup FWK for multithreaded
-process.options.numberOfThreads=cms.untracked.uint32(4)
-process.options.numberOfStreams=cms.untracked.uint32(0)
-process.options.numberOfConcurrentLuminosityBlocks=cms.untracked.uint32(1)
 
 # customisation of the process.
 
@@ -1132,6 +1129,7 @@ process = addMonitoring(process)
 
 # Customisation from command line
 
+process.GlobalTag.toGet = cms.VPSet(cms.PSet(record = cms.string("GeometryFileRcd"),tag = cms.string("XMLFILE_Geometry_2016_81YV1_Extended2016_mc"),label = cms.untracked.string("Extended"),),)
 # Add early deletion of temporary data products to reduce peak memory need
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
 process = customiseEarlyDelete(process)
