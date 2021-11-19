@@ -40,7 +40,9 @@ def hashedName(name, bits=5):
     if len(name) < 100:
         return name
     
-    h = hashlib.sha256(name).hexdigest()
+    print("Name is", name)
+    h = hashlib.sha256(name.encode('utf-8')).hexdigest()
+    print("Hash is", h)
     return name[:(100-bits)] + h[:bits]
 
 def makeConfig(path, name, config_name, das, nThreads):
@@ -124,7 +126,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
 
         outname = "_".join(das.split("/")[1:(3 if isData else 2)])
         if not isData:
-            outname += "_"+nameFromInput(das)
+            outname += "_"+nameFromInput(das)+"WeightFix"
 
         das = das_split[0]
         requestName = hashedName(outname)
