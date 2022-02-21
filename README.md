@@ -8,9 +8,9 @@ cd CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction
 
 # Running
 
-Ex: ```./scripts/prepareCrab.py inputs/data.txt```
+Ex: ```./scripts/prepareCrab.py --makeConfig -j1 inputs/data.txt```
 
-Will make all the crab submit files for the data samples in that text file. add ```--makeConfig``` to generate the configs from the cmsDriver scripts in the scripts directory (already done for NanoV8, so not needed). 
+Will make all the crab submit files for the data samples in that text file. ```--makeConfig``` generates the configs from the cmsDriver scripts in the scripts directory, in order to ensure things are up to date.  ```-j1``` forces single core running which is needed for the Geant4e propagator.
 
 Add ```--submit X Y``` to split the submission into X pieces and submit every Y sample. For example, to divide production between 3 people, ./scripts/prepareCrab.py inputs/data.txt --submit 3 i for i = 1,2,3 for the 3 different people.
 
