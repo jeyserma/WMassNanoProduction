@@ -18,6 +18,7 @@ cp $path/setup/sparse-checkout .git/info
 scram tool remove lhapdf
 cp $path/setup/lhapdf.xml ../config/toolbox/slc7_amd64_gcc700/tools/selected/
 scram setup lhapdf
+eval `scramv1 runtime -sh`
 git read-tree -mu HEAD
 pwd
 scram b -j24
