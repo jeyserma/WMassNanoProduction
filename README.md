@@ -8,7 +8,7 @@ cd CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction
 
 # Running
 
-Ex: ```./scripts/prepareCrab.py --makeConfig -j1 inputs/data.txt```
+Ex: ```./scripts/prepareCrab.py --makeConfig -j1 -i inputs/data.txt```
 
 Will make all the crab submit files for the data samples in that text file. ```--makeConfig``` generates the configs from the cmsDriver scripts in the scripts directory, in order to ensure things are up to date.  ```-j1``` forces single core running which is needed for the Geant4e propagator.
 
