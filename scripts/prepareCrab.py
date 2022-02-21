@@ -127,22 +127,23 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
         outname = "_".join(das.split("/")[1:(3 if isData else 2)])
         if not isData:
             outname += "_"+nameFromInput(das)+"WeightFix"
+            name += "WeightFix"
 
         das = das_split[0]
         requestName = hashedName(outname)
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
         
-        units = 8 if not isData else 100
+        units = 2 if not isData else 14
         if "Wminus" in das:
-            units = 32
+            units = 8
         elif "Wplus" in das or "DY" in das:
-            units = 16
+            units = 4
 
         fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
             outfile, 
             {"era" : name, "splitting" : "LumiBased" if isData else "FileBased", 
                 "threads" : nThreads, "memory" : nThreads*2000, "name" : requestName, 
-                "input" : das, "config" : config_name, "units" : units,
+                "input" : das, "config" : config_name, "units" : units*args.nThreads,
                 "dbs" : "global" if len(das_split) == 1 else "phys03",
                 "useParent" : "False" if len(das_split) == 1 else "True",
             })
@@ -156,7 +157,7 @@ parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to 
 parser.add_argument('-i', '--inputFiles', required=True, type=str, nargs='*', help='inputFiles to process')
 parser.add_argument('-s', '--submit', type=int, nargs=2, help='Number of splits to make, which split to submit' \
         ' ex: 1 1 for all, 2 1 for every second file', default=(0,0))
-parser.add_argument('-j', '--nThreads', type=int, default=4, 
+parser.add_argument('-j', '--nThreads', type=int, default=1, 
     help="number of threads (make sure its consistent if you're not regenerating configs)")
 args = parser.parse_args()
 if args.submit[1] > args.submit[0] or (args.submit[1] == 0 and args.submit[1] != args.submit[0]):

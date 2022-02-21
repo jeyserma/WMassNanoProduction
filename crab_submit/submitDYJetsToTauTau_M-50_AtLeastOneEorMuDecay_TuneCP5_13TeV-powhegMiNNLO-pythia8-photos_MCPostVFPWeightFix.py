@@ -1,7 +1,7 @@
 from CRABClient.UserUtilities import config
 config = config()
 
-config.General.requestName = 'WminusJetsToMuNu_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFPWeightFix'
+config.General.requestName = 'DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFPWeif8ee8'
 config.General.workArea = 'crab_projects'
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -12,10 +12,10 @@ config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '../configs/NanoV8MCPostVFP_weightFix_cfg.py'
 config.JobType.allowUndistributedCMSSW = True
 
-config.Data.inputDataset = '/WminusJetsToMuNu_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights-9b9022aedaa4cc92ec8a12485301834e/USER'
+config.Data.inputDataset = '/DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights-cc94a1847acdc455d120f750cf354187/USER'
 
 config.Data.splitting = 'FileBased'
-config.Data.unitsPerJob = 8
+config.Data.unitsPerJob = 4
 config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
 config.Data.publication = True
 config.Data.outputDatasetTag = 'NanoV8MCPostVFPWeightFix'

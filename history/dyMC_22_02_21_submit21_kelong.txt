@@ -1,0 +1,85 @@
+Submit log for inputs: inputs/dyMC.txt
+Auto-generated with command ./scripts/prepareCrab.py --makeConfig -j1 -i inputs/dyMC.txt -s 2 1
+Script ran at 2022-02-21 02:08:42.254959
+Git hash of scripts is "38983868fdeccea90d386dd8bf856fc107ff71f6"
+Git hash of CMSSW is "ab978310ac3847caff1aec2eeefe94974eaa53f4"
+
+Git diff of scripts is 
+
+Git diff of CMSSW is 
+diff --git a/PhysicsTools/NanoAOD/plugins/GenWeightsTableProducer.cc b/PhysicsTools/NanoAOD/plugins/GenWeightsTableProducer.cc
+index d56da070a85..8c964d1b1d5 100644
+--- a/PhysicsTools/NanoAOD/plugins/GenWeightsTableProducer.cc
++++ b/PhysicsTools/NanoAOD/plugins/GenWeightsTableProducer.cc
+@@ -205,7 +205,7 @@ void GenWeightsTableProducer::produce(edm::StreamID id, edm::Event& iEvent, cons
+   // table for gen info, always available
+   auto outGeninfo = std::make_unique<nanoaod::FlatTable>(1, "genWeight", true);
+   outGeninfo->setDoc("generator weight");
+-  outGeninfo->addColumnValue<float>("", genInfo.weight(), "generator weight");
++  outGeninfo->addColumnValue<float>("", genInfo.weight(), "generator weight", nanoaod::FlatTable::FloatColumn);
+   iEvent.put(std::move(outGeninfo), "GENWeight");
+   //this will take care of sum of genWeights
+   counter.incGenOnly(genWeight);
+@@ -316,7 +316,7 @@ void GenWeightsTableProducer::fillTableIgnoringGroups(std::vector<nanoaod::FlatT
+     tableInfo.append("WARNING: " + warnings);
+ 
+   weightTablevec.emplace_back(weights.size(), tablename, false);
+-  weightTablevec.back().addColumn<float>("", weights, tableInfo, lheWeightPrecision_);
++  weightTablevec.back().addColumn<float>("", weights, tableInfo, nanoaod::FlatTable::FloatColumn, lheWeightPrecision_);
+ }
+ 
+ void GenWeightsTableProducer::addWeightGroupToTable(std::vector<nanoaod::FlatTable>& weightTablevec,
+@@ -357,7 +357,7 @@ void GenWeightsTableProducer::addWeightGroupToTable(std::vector<nanoaod::FlatTab
+       entryName.append(std::to_string(typeCount[weightType]));
+     }
+     weightTablevec.emplace_back(weights.size(), entryName, false);
+-    weightTablevec.back().addColumn<float>("", weights, label, lheWeightPrecision_);
++    weightTablevec.back().addColumn<float>("", weights, label, nanoaod::FlatTable::FloatColumn, lheWeightPrecision_);
+ 
+     typeCount[weightType]++;
+   }
+@@ -386,7 +386,7 @@ WeightGroupsToStore GenWeightsTableProducer::groupsToStore(
+       toStorePerType = hand->allWeightGroupsInfoWithIndices();
+     } else {
+       for (auto& typeAndCount : storePerType) {
+-        if (typeAndCount.first == gen::WeightType::kUnknownWeights && !storeUnknown)
++        if (!typeAndCount.second || (typeAndCount.first == gen::WeightType::kUnknownWeights && !storeUnknown))
+           continue;
+         // Since the count isn't updated, the counts are effectively independent between LHE and GEN
+         auto groupsPerType = weightDataPerType(hand, typeAndCount.first, typeAndCount.second);
+diff --git a/PhysicsTools/NanoAOD/python/genWeights_cff.py b/PhysicsTools/NanoAOD/python/genWeights_cff.py
+index 2a5e1e2d094..dab0ed2f868 100644
+--- a/PhysicsTools/NanoAOD/python/genWeights_cff.py
++++ b/PhysicsTools/NanoAOD/python/genWeights_cff.py
+@@ -30,4 +30,4 @@ genWeightsTable = cms.EDProducer("GenWeightsTableProducer",
+     # nStoreUngroupedLhe = cms.untracked.int32(100),
+ )
+ 
+-genWeightsTableTask = cms.Task(lheWeightsNano, genWeightsNano, genWeightsTable)
++genWeightsTables = cms.Sequence(lheWeightsNano*genWeightsNano*genWeightsTable)
+diff --git a/SimDataFormats/GeneratorProducts/src/classes_def.xml b/SimDataFormats/GeneratorProducts/src/classes_def.xml
+index 4b99a2f1908..97dac7ff8b5 100644
+--- a/SimDataFormats/GeneratorProducts/src/classes_def.xml
++++ b/SimDataFormats/GeneratorProducts/src/classes_def.xml
+@@ -41,8 +41,7 @@
+ 	<class name="HepMC::FourVector" ClassVersion="10">
+   <version ClassVersion="10" checksum="3279825169"/>
+  </class>
+-	<class name="HepMC::HeavyIon" ClassVersion="11">
+-  <version ClassVersion="11" checksum="1386021189"/>
++	<class name="HepMC::HeavyIon" ClassVersion="10">
+   <version ClassVersion="10" checksum="972653740"/>
+  </class>
+ 	<class name="HepMC::PdfInfo" ClassVersion="10">
+@@ -169,8 +168,7 @@
+ 
+ 	<!-- GenEventInfoProduct -->
+ 
+- <class name="GenEventInfoProduct" ClassVersion="12">
+-  <version ClassVersion="12" checksum="4234939286"/>
++ <class name="GenEventInfoProduct" ClassVersion="11">
+   <version ClassVersion="11" checksum="4154339631"/>
+   <version ClassVersion="10" checksum="2479857328"/>
+  </class>
+
+--------------------------------------------------------------------------------
