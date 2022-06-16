@@ -1,0 +1,74 @@
+Submit log for inputs: inputs/wMC_v9.txt
+Auto-generated with command ./scripts/prepareCrab.py --makeConfig -j1 -i inputs/wMC_v9.txt -s 1 1
+Script ran at 2022-06-16 12:54:04.905059
+Git hash of scripts is "b3e2db450ee06880fbad99783b54c3e230ad7c3c"
+Git hash of CMSSW is "7f66633e87ec7633a6f1ee958d98c055d8f28550"
+
+Git diff of scripts is 
+diff --git a/inputs/dyMC.txt b/inputs/dyMC.txt
+deleted file mode 100644
+index 247cf13..0000000
+--- a/inputs/dyMC.txt
++++ /dev/null
+@@ -1,5 +0,0 @@
+-# <Weight dataset> <original MiniAOD>
+-/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights_APVpreVFP-883f8224005bb85ca71ea2ca271fa8bd/USER /DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAODAPV-106X_mcRun2_asymptotic_preVFP_v8-v2/MINIAODSIM
+-/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights-883f8224005bb85ca71ea2ca271fa8bd/USER /DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAOD-106X_mcRun2_asymptotic_v13-v2/MINIAODSIM
+-/DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights-cc94a1847acdc455d120f750cf354187/USER /DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAOD-106X_mcRun2_asymptotic_v13-v2/MINIAODSIM
+-/DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights_APVpreVFP-cc94a1847acdc455d120f750cf354187/USER /DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAODAPV-106X_mcRun2_asymptotic_preVFP_v8-v2/MINIAODSIM
+diff --git a/inputs/wmMC.txt b/inputs/wmMC.txt
+deleted file mode 100644
+index f14a2b5..0000000
+--- a/inputs/wmMC.txt
++++ /dev/null
+@@ -1,2 +0,0 @@
+-/WminusJetsToMuNu_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights-9b9022aedaa4cc92ec8a12485301834e/USER /WminusJetsToMuNu_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAOD-106X_mcRun2_asymptotic_v13-v1/MINIAODSIM
+-/WminusJetsToMuNu_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/mseidel-LHE_massWeights_APVpreVFP-9b9022aedaa4cc92ec8a12485301834e/USER /WminusJetsToMuNu_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAODAPV-106X_mcRun2_asymptotic_preVFP_v8-v1/MINIAODSIM
+diff --git a/scripts/prepareCrab.py b/scripts/prepareCrab.py
+index 97c60aa..952f08d 100755
+--- a/scripts/prepareCrab.py
++++ b/scripts/prepareCrab.py
+@@ -105,7 +105,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
+     if submit[0] != 0:
+         writeHistory(path, history_file, inputFile)
+ 
+-    era = "NanoV8"
++    era = "NanoV9"
+ 
+     for i, das in enumerate(inputs):
+         name = era+nameFromInput(das)
+@@ -126,8 +126,10 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
+ 
+         outname = "_".join(das.split("/")[1:(3 if isData else 2)])
+         if not isData:
+-            outname += "_"+nameFromInput(das)+"WeightFix"
+-            name += "WeightFix"
++            outname += "_"+nameFromInput(das)
++            if len(das_split) > 1:
++                name += "WeightFix"
++                outname += "WeightFix"
+ 
+         das = das_split[0]
+         requestName = hashedName(outname)
+diff --git a/setup/clone.sh b/setup/clone.sh
+index 16ff3ae..d27f548 100644
+--- a/setup/clone.sh
++++ b/setup/clone.sh
+@@ -8,8 +8,8 @@ cd $cmssw/src
+ eval `scramv1 runtime -sh`
+ git cms-init
+ git remote add WMass git@github.com:WMass/cmssw.git
+-git fetch WMass WmassNanoProd_106X_genweights
+-git checkout WMass/WmassNanoProd_106X_genweights
++git fetch WMass WmassNanoProd_10_6_26
++git checkout WMass/WmassNanoProd_10_6_26
+ git checkout -b WmassNanoProd_106X_genWeights 
+ path=Configuration/WMassNanoProduction
+ git clone git@github.com:WMass/WMassNanoProduction.git $path
+
+Git diff of CMSSW is 
+
+--------------------------------------------------------------------------------
+
+Running command: crab submit /home/k/kelong/work/mWProd/CMSSW_10_6_26/src/Configuration/WMassNanoProduction/crab_submit/submitWminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+--> Failed to submit file /home/k/kelong/work/mWProd/CMSSW_10_6_26/src/Configuration/WMassNanoProduction/crab_submit/submitWminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py

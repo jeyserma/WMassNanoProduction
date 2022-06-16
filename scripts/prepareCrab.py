@@ -105,7 +105,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
     if submit[0] != 0:
         writeHistory(path, history_file, inputFile)
 
-    era = "NanoV8"
+    era = "NanoV9"
 
     for i, das in enumerate(inputs):
         name = era+nameFromInput(das)
@@ -126,8 +126,10 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
 
         outname = "_".join(das.split("/")[1:(3 if isData else 2)])
         if not isData:
-            outname += "_"+nameFromInput(das)+"WeightFix"
-            name += "WeightFix"
+            outname += "_"+nameFromInput(das)
+            if len(das_split) > 1:
+                name += "WeightFix"
+                outname += "WeightFix"
 
         das = das_split[0]
         requestName = hashedName(outname)

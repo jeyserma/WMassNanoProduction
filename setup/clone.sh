@@ -8,8 +8,8 @@ cd $cmssw/src
 eval `scramv1 runtime -sh`
 git cms-init
 git remote add WMass git@github.com:WMass/cmssw.git
-git fetch WMass WmassNanoProd_106X_genweights
-git checkout WMass/WmassNanoProd_106X_genweights
+git fetch WMass WmassNanoProd_10_6_26
+git checkout WMass/WmassNanoProd_10_6_26
 git checkout -b WmassNanoProd_106X_genWeights 
 path=Configuration/WMassNanoProduction
 git clone git@github.com:WMass/WMassNanoProduction.git $path
