@@ -1,0 +1,103 @@
+Submit log for inputs: inputs/wMC_v9.txt
+Auto-generated with command ./scripts/prepareCrab.py --makeConfig -i inputs/wMC_v9.txt -s 1 1
+Script ran at 2022-06-21 13:13:01.635110
+Git hash of scripts is "32bdf253df5e0f2c9d63869e0b08c86009bdfd46"
+Git hash of CMSSW is "7f66633e87ec7633a6f1ee958d98c055d8f28550"
+
+Git diff of scripts is 
+diff --git a/README.md b/README.md
+index 7a15c29..1ee5405 100644
+--- a/README.md
++++ b/README.md
+@@ -2,9 +2,13 @@ Scripts for keeping track of private nanoaod production. Auto-generates config f
+ 
+ # To clone with CMSSW setup
+ 
++# Needed if on a non-slc7 machine
++```sh
++cmssw-cc7
+ bash <(curl -s https://raw.githubusercontent.com/WMass/WMassNanoProduction/main/setup/clone.sh)
+ 
+-cd CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction
++cd CMSSW_10_6_26/src/Configuration/WMassNanoProduction
++```
+ 
+ # Running
+ 
+diff --git a/crab_submit/submitWminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py b/crab_submit/submitWminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+index 9d8cb23..c00caa7 100644
+--- a/crab_submit/submitWminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
++++ b/crab_submit/submitWminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+@@ -15,7 +15,7 @@ config.JobType.allowUndistributedCMSSW = True
+ config.Data.inputDataset = '/WminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM'
+ 
+ config.Data.splitting = 'FileBased'
+-config.Data.unitsPerJob = 8
++config.Data.unitsPerJob = 2
+ config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
+ config.Data.publication = True
+ config.Data.outputDatasetTag = 'NanoV9MCPostVFP'
+diff --git a/scripts/prepareCrab.py b/scripts/prepareCrab.py
+index 952f08d..f89dec8 100755
+--- a/scripts/prepareCrab.py
++++ b/scripts/prepareCrab.py
+@@ -136,10 +136,6 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
+         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
+         
+         units = 2 if not isData else 14
+-        if "Wminus" in das:
+-            units = 8
+-        elif "Wplus" in das or "DY" in das:
+-            units = 4
+ 
+         fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
+             outfile, 
+diff --git a/setup/clone.sh b/setup/clone.sh
+index d27f548..5d6acc3 100644
+--- a/setup/clone.sh
++++ b/setup/clone.sh
+@@ -2,24 +2,19 @@
+ set -e
+ source /cvmfs/cms.cern.ch/cmsset_default.sh
+ export SCRAM_ARCH=slc7_amd64_gcc700
+-cmssw=CMSSW_10_6_19_patch2
+-scramv1 project $cmssw
+-cd $cmssw/src
++cmssw=10_6_26
++scramv1 project CMSSW_$cmssw
++cd CMSSW_$cmssw/src
+ eval `scramv1 runtime -sh`
+-git cms-init
+-git remote add WMass git@github.com:WMass/cmssw.git
+-git fetch WMass WmassNanoProd_10_6_26
+-git checkout WMass/WmassNanoProd_10_6_26
+-git checkout -b WmassNanoProd_106X_genWeights 
++git cms-checkout-topic -u WMass:WmassNanoProd_$cmssw
++git cms-checkdeps -a
+ path=Configuration/WMassNanoProduction
+ git clone git@github.com:WMass/WMassNanoProduction.git $path
+-cp $path/setup/sparse-checkout .git/info
+ # A "trick" to link to the newest LHAPDF
+ scram tool remove lhapdf
+ cp $path/setup/lhapdf.xml ../config/toolbox/slc7_amd64_gcc700/tools/selected/
+ scram setup lhapdf
+ eval `scramv1 runtime -sh`
+-git read-tree -mu HEAD
+ pwd
+ scram b -j24
+ 
+
+Git diff of CMSSW is 
+
+--------------------------------------------------------------------------------
+
+Running command: crab submit /home/k/kelong/work/mWProd/CMSSW_10_6_26/src/Configuration/WMassNanoProduction/crab_submit/submitWminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+Will use CRAB configuration file /home/k/kelong/work/mWProd/CMSSW_10_6_26/src/Configuration/WMassNanoProduction/crab_submit/submitWminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP.py
+Importing CMSSW configuration ../configs/NanoV9MCPostVFP_cfg.py
+Finished importing CMSSW configuration ../configs/NanoV9MCPostVFP_cfg.py
+Sending the request to the server at cmsweb.cern.ch
+Success: Your task has been delivered to the prod CRAB3 server.
+Task name: 220621_131411:kelong_crab_WminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP
+Project dir: crab_projects/crab_WminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP
+Please use ' crab status -d crab_projects/crab_WminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP ' to check how the submission process proceeds.
+Log file is /home/k/kelong/work/mWProd/CMSSW_10_6_26/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_WminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos_MCPostVFP/crab.log

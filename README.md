@@ -2,9 +2,13 @@ Scripts for keeping track of private nanoaod production. Auto-generates config f
 
 # To clone with CMSSW setup
 
+# Needed if on a non-slc7 machine
+```sh
+cmssw-cc7
 bash <(curl -s https://raw.githubusercontent.com/WMass/WMassNanoProduction/main/setup/clone.sh)
 
-cd CMSSW_10_6_19_patch2/src/Configuration/WMassNanoProduction
+cd CMSSW_10_6_26/src/Configuration/WMassNanoProduction
+```
 
 # Running
 

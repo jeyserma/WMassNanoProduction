@@ -2,24 +2,19 @@
 set -e
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 export SCRAM_ARCH=slc7_amd64_gcc700
-cmssw=CMSSW_10_6_19_patch2
-scramv1 project $cmssw
-cd $cmssw/src
+cmssw=10_6_26
+scramv1 project CMSSW_$cmssw
+cd CMSSW_$cmssw/src
 eval `scramv1 runtime -sh`
-git cms-init
-git remote add WMass git@github.com:WMass/cmssw.git
-git fetch WMass WmassNanoProd_10_6_26
-git checkout WMass/WmassNanoProd_10_6_26
-git checkout -b WmassNanoProd_106X_genWeights 
+git cms-checkout-topic -u WMass:WmassNanoProd_$cmssw
+git cms-checkdeps -a
 path=Configuration/WMassNanoProduction
 git clone git@github.com:WMass/WMassNanoProduction.git $path
-cp $path/setup/sparse-checkout .git/info
 # A "trick" to link to the newest LHAPDF
 scram tool remove lhapdf
 cp $path/setup/lhapdf.xml ../config/toolbox/slc7_amd64_gcc700/tools/selected/
 scram setup lhapdf
 eval `scramv1 runtime -sh`
-git read-tree -mu HEAD
 pwd
 scram b -j24
 

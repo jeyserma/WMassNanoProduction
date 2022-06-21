@@ -136,10 +136,6 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
         
         units = 2 if not isData else 14
-        if "Wminus" in das:
-            units = 8
-        elif "Wplus" in das or "DY" in das:
-            units = 4
 
         fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
             outfile, 
