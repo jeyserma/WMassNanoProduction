@@ -140,7 +140,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
                 outname += "WeightFix"
             if args.tagAndProbe:
                 outname += "TagAndProbe"
-                
+
         das = das_split[0]
         requestName = hashedName(outname)
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
