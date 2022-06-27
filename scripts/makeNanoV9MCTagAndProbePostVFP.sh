@@ -3,7 +3,7 @@
 if [[ $# -lt 1 ]]; then
     echo "Requires at least one command line arguments!"
     echo "ex. "
-    echo "    bash makeNanoV9MCTagAndPrbePostVFP <das_path> <name> <nthreads>"
+    echo "    bash makeNanoV9MCTagAndProbePostVFP <das_path> <name> <nthreads>"
     exit 1
 fi
 

@@ -130,14 +130,17 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
             raise RuntimeError("Config file %s does not exist. Rerun with --makeConfig" % config_path)
 
         outname = "_".join(das.split("/")[1:(3 if isData else 2)])
-        if not isData:
+        if isData:
+            if args.tagAndProbe:
+                outname += "_TagAndProbe"
+        else:
             outname += "_"+nameFromInput(das)
             if len(das_split) > 1:
                 name += "WeightFix"
                 outname += "WeightFix"
             if args.tagAndProbe:
                 outname += "TagAndProbe"
-
+                
         das = das_split[0]
         requestName = hashedName(outname)
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
