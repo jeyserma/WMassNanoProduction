@@ -18,12 +18,17 @@ def fillTemplatedFile(template_file_name, out_file_name, template_dict):
     with open(out_file_name, "w") as outFile:
         outFile.write(result)
 
-def nameFromInput(das_path):
-    if not "MINIAODSIM" in das_path:
-        return "Data"
-    if "APV" in das_path:
-        return "MCPreVFP"
-    return "MCPostVFP"
+def nameFromInput(das_path, tagAndProbe=False):
+    print(das_path[-4:])
+    label = "MC" if "SIM" in das_path[-3:] else "Data"
+    if tagAndProbe:
+        label += "TagAndProbe"
+    # TODO: This doesn't actually work for data!
+    label += "PreVFP" if "APV" in das_path else "PostVFP"
+
+    print(label)
+
+    return label
 
 def gitHash(path):
     return subprocess.check_output(['git', 'log', '-1', '--format="%H"'], cwd=path).decode('UTF-8')
@@ -108,7 +113,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
     era = "NanoV9"
 
     for i, das in enumerate(inputs):
-        name = era+nameFromInput(das)
+        name = era+nameFromInput(das, args.tagAndProbe)
         isData = "Data" in name
         config_name = name 
         das_split = das.split(" ")
@@ -130,6 +135,8 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
             if len(das_split) > 1:
                 name += "WeightFix"
                 outname += "WeightFix"
+            if args.tagAndProbe:
+                outname += "TagAndProbe"
 
         das = das_split[0]
         requestName = hashedName(outname)
@@ -152,6 +159,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
 parser = argparse.ArgumentParser()
 parser.add_argument('--dryRun', action='store_true', help='print submit commands rather than executing them')
 parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to build config file')
+parser.add_argument('--tagAndProbe', action='store_true', help='Submit tag and probe nano')
 parser.add_argument('-i', '--inputFiles', required=True, type=str, nargs='*', help='inputFiles to process')
 parser.add_argument('-s', '--submit', type=int, nargs=2, help='Number of splits to make, which split to submit' \
         ' ex: 1 1 for all, 2 1 for every second file', default=(0,0))
