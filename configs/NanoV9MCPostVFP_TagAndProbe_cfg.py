@@ -25,12 +25,12 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000)
+    input = cms.untracked.int32(-1)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:60CB46A2-ADC9-E94F-B686-1D1A5F77022D.root'),
+    fileNames = cms.untracked.vstring('/store/mc/RunIISummer20UL16RECO/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/AODSIM/106X_mcRun2_asymptotic_v13-v2/00000/0001EFA7-97DF-4A45-84A9-79448BFD814B.root','/store/mc/RunIISummer20UL16RECO/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/AODSIM/106X_mcRun2_asymptotic_v13-v2/00000/00091203-AF24-564C-BB96-67F5FCB6189B.root','/store/mc/RunIISummer20UL16RECO/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/AODSIM/106X_mcRun2_asymptotic_v13-v2/00000/005022AF-88DB-8749-B967-47549E866962.root','/store/mc/RunIISummer20UL16RECO/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/AODSIM/106X_mcRun2_asymptotic_v13-v2/00000/00D198D4-99C5-104E-9144-AEF5BFC7F5D4.root','/store/mc/RunIISummer20UL16RECO/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/AODSIM/106X_mcRun2_asymptotic_v13-v2/00000/00E4961F-9971-6644-A310-9F28C0B5A06D.root','/store/mc/RunIISummer20UL16RECO/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/AODSIM/106X_mcRun2_asymptotic_v13-v2/00000/00ECDFAC-820E-154F-A233-C0B13A43C870.root','/store/mc/RunIISummer20UL16RECO/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/AODSIM/106X_mcRun2_asymptotic_v13-v2/00000/00FF939E-8449-5E44-B9CE-C900C6D52F42.root','/store/mc/RunIISummer20UL16RECO/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/AODSIM/106X_mcRun2_asymptotic_v13-v2/00000/016EDBDF-FAC8-1548-B4AE-8ADAAB7C00ED.root','/store/mc/RunIISummer20UL16RECO/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/AODSIM/106X_mcRun2_asymptotic_v13-v2/00000/018018DF-29EC-AA44-BC0F-18D592A3DDDF.root','/store/mc/RunIISummer20UL16RECO/DYJetsToMuMu_M-50_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/AODSIM/106X_mcRun2_asymptotic_v13-v2/00000/01D085C0-18EB-CC40-8DF9-88ADA8A8761B.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -126,8 +126,11 @@ from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC
 process = miniAOD_customizeAllMC(process)
 
 # End of customisation functions
-from PhysicsTools.NanoAOD.nanoTP_cff import customizeMuonPassThrough
-process = customizeMuonPassThrough(process)
+from PhysicsTools.NanoAOD.nanoTP_cff import customizeNANOTP
+process = customizeNANOTP(process)
+
+from PhysicsTools.NanoAOD.nanoTP_cff import nanoGenWmassCustomize
+process = nanoGenWmassCustomize(process)
 
 # Add early deletion of temporary data products to reduce peak memory need
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
