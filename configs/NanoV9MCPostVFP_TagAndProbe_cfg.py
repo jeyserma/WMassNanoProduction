@@ -129,7 +129,7 @@ process = miniAOD_customizeAllMC(process)
 from PhysicsTools.NanoAOD.nanoTP_cff import customizeNANOTP
 process = customizeNANOTP(process)
 
-from PhysicsTools.NanoAOD.nanoTP_cff import nanoGenWmassCustomize
+from PhysicsTools.NanoAOD.nano_cff import nanoGenWmassCustomize
 process = nanoGenWmassCustomize(process)
 
 # Add early deletion of temporary data products to reduce peak memory need
