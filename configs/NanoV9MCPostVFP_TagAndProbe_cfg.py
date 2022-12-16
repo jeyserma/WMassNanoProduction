@@ -129,8 +129,8 @@ process = miniAOD_customizeAllMC(process)
 from PhysicsTools.NanoAOD.nanoTP_cff import customizeNANOTP
 process = customizeNANOTP(process)
 
-from PhysicsTools.NanoAOD.nano_cff import nanoGenWmassCustomize_minimal
-process = nanoGenWmassCustomize_minimal(process)
+from PhysicsTools.NanoAOD.nano_cff import customizeGenLeptonPrecision
+process = customizeGenLeptonPrecision(process)
 
 # Add early deletion of temporary data products to reduce peak memory need
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
