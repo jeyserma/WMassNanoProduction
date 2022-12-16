@@ -30,6 +30,4 @@ cmsDriver.py RECO --conditions 106X_dataRun2_v35 \
     --no_exec \
     --number $nevents \
     --python_filename $config_name \
-    --scenario pp --step NANO --data \
-    --customise_commands \
-'process.GlobalTag.toGet = cms.VPSet(cms.PSet(record = cms.string("GeometryFileRcd"),tag = cms.string("XMLFILE_Geometry_2016_81YV1_Extended2016_mc"),label = cms.untracked.string("Extended"),),)'
+    --scenario pp --step NANO --data
