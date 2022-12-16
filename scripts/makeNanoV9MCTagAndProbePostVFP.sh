@@ -30,7 +30,7 @@ cmsDriver.py RECO --conditions 106X_mcRun2_asymptotic_v17 \
     --datatier NANOAODSIM --eventcontent NANOAODSIM \
     --era Run2_2016,run2_nanoAOD_106Xv2 \
     --geometry DB:Extended \
-    --customise Configuration/DataProcessing/Utils.addMonitoring \
+    --customise Configuration/DataProcessing/Utils.addMonitoring,PhysicsTools/NanoAOD/nano_cff.nanoGenWmassCustomize \
     --filein $sample_name --fileout file:$outfile --nThreads $nThreads --no_exec \
     --python_filename $config_name --mc \
     --scenario pp --step PAT,USERNANO:nanotpSequenceMC \
