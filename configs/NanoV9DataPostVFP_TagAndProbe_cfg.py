@@ -2,7 +2,7 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: RECO --conditions 106X_mcRun2_asymptotic_preVFP_v11 --customise PhysicsTools/NanoAOD/nanogen_cff.customizeNanoGEN --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv2 --eventcontent NANOAODSIM --filein file:60CB46A2-ADC9-E94F-B686-1D1A5F77022D.root --fileout file:test.root --nThreads 2 --no_exec --python_filename configs/test_cfg.py --mc --scenario pp --step PAT,NANOGEN -n 1000 --runUnscheduled
+# with command line options: RECO --conditions 106X_mcRun2_asymptotic_preVFP_v9 --customise PhysicsTools/NanoAOD/nanogen_cff.customizeNanoGEN --datatier NANOAOD --era Run2_2016,run2_nanoAOD_106Xv1 --eventcontent NANOAODSIM --filein file:60CB46A2-ADC9-E94F-B686-1D1A5F77022D.root --fileout file:test.root --nThreads 2 --no_exec --python_filename configs/test_cfg.py --mc --scenario pp --step PAT,NANOGEN -n 1000 --runUnscheduled
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run2_2016_cff import Run2_2016
@@ -15,22 +15,21 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
-process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('PhysicsTools.PatAlgos.slimming.metFilterPaths_cff')
-process.load('Configuration.StandardSequences.PATMC_cff')
+process.load('Configuration.StandardSequences.PAT_cff')
 process.load('PhysicsTools.NanoAOD.nanoTP_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000)
+    input = cms.untracked.int32(-1)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:60CB46A2-ADC9-E94F-B686-1D1A5F77022D.root'),
+    fileNames = cms.untracked.vstring('/store/data/Run2016H/SingleMuon/AOD/21Feb2020_UL2016_WMass-v3/2430007/AC804004-6F07-3B40-B405-FA5C75676331.root','/store/data/Run2016H/SingleMuon/AOD/21Feb2020_UL2016_WMass-v3/2430007/ACE2899C-1A98-F544-B63D-922C1399D27A.root','/store/data/Run2016H/SingleMuon/AOD/21Feb2020_UL2016_WMass-v3/2430007/AD504CB3-553C-2B49-8348-6E522BD162D5.root','/store/data/Run2016H/SingleMuon/AOD/21Feb2020_UL2016_WMass-v3/2430007/ADA3CA5C-2328-FA49-9C1B-9988CA8755C2.root','/store/data/Run2016H/SingleMuon/AOD/21Feb2020_UL2016_WMass-v3/2430007/AEB42608-4649-4B43-B708-EBB10F50F2CB.root','/store/data/Run2016H/SingleMuon/AOD/21Feb2020_UL2016_WMass-v3/2430007/AF61E678-B2AF-614A-8F78-570A20DC6C82.root','/store/data/Run2016H/SingleMuon/AOD/21Feb2020_UL2016_WMass-v3/2430007/AF7D1B88-CF95-4640-B2D0-ED905A645510.root','/store/data/Run2016H/SingleMuon/AOD/21Feb2020_UL2016_WMass-v3/2430007/B0C22EDD-A89C-9F4D-956D-EDA5108BCC4B.root','/store/data/Run2016H/SingleMuon/AOD/21Feb2020_UL2016_WMass-v3/2430007/B0E3786E-90CD-C140-BFF4-A1F0CC6A39C3.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -62,7 +61,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
 
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mcRun2_asymptotic_preVFP_v11', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '106X_dataRun2_v35', '')
 
 # Path and EndPath definitions
 process.Flag_trackingFailureFilter = cms.Path(process.goodVertices+process.trackingFailureFilter)
@@ -94,7 +93,7 @@ process.Flag_BadPFMuonSummer16Filter = cms.Path(process.BadPFMuonSummer16Filter)
 process.Flag_muonBadTrackFilter = cms.Path(process.muonBadTrackFilter)
 process.Flag_CSCTightHalo2015Filter = cms.Path(process.CSCTightHalo2015Filter)
 process.Flag_BadPFMuonDzFilter = cms.Path(process.BadPFMuonDzFilter)
-process.nanoAOD_step = cms.Path(process.nanotpSequenceMC)
+process.nanoAOD_step = cms.Path(process.nanotpSequence)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.NANOAODSIMoutput_step = cms.EndPath(process.NANOAODSIMoutput)
 
@@ -120,19 +119,16 @@ process=convertToUnscheduled(process)
 
 # customisation of the process.
 # Automatic addition of the customisation function from PhysicsTools.PatAlgos.slimming.miniAOD_tools
-from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC 
+from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllData
 
-#call to customisation function miniAOD_customizeAllMC imported from PhysicsTools.PatAlgos.slimming.miniAOD_tools
-process = miniAOD_customizeAllMC(process)
+#call to customisation function miniAOD_customizeAllData imported from PhysicsTools.PatAlgos.slimming.miniAOD_tools
+process = miniAOD_customizeAllData(process)
 
 # End of customisation functions
 from PhysicsTools.NanoAOD.nanoTP_cff import customizeNANOTP
 process = customizeNANOTP(process)
 
-from PhysicsTools.NanoAOD.nanoTP_cff import nanoGenWmassCustomize
-process = nanoGenWmassCustomize(process)
-
 # Add early deletion of temporary data products to reduce peak memory need
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
 process = customiseEarlyDelete(process)
-#
+# End adding early deletion
