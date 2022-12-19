@@ -22,7 +22,6 @@ outfile=${name}.root
 
 cmsDriver.py RECO --conditions 106X_dataRun2_v35 \
     --customise Configuration/DataProcessing/Utils.addMonitoring \
-    --geometry DB:Extended \
     --datatier NANOAOD \
     --era Run2_2016,run2_nanoAOD_106Xv2 \
     --eventcontent NANOAOD \

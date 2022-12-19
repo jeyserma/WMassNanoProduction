@@ -10,6 +10,7 @@ import getpass
 import sys
 import datetime
 import json
+import re
 
 def fillTemplatedFile(template_file_name, out_file_name, template_dict):
     with open(template_file_name, "r") as templateFile:
@@ -146,6 +147,11 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun, match_expr, v
                 outname += "TagAndProbe"
 
         das = das_split[0]
+
+        run_match = re.search("(Run20\d\d[A-Z])", das)
+        if isData and run_match:
+            name = name.replace("Data", f"Data{run_match.group(1)}")
+
         requestName = hashedName(outname)
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
         

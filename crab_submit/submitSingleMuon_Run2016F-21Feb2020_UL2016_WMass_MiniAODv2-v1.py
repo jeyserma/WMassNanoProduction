@@ -18,7 +18,7 @@ config.Data.splitting = 'LumiBased'
 config.Data.unitsPerJob = 14
 config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
 config.Data.publication = True
-config.Data.outputDatasetTag = 'NanoV9DataPostVFP'
+config.Data.outputDatasetTag = 'NanoV9DataPostVFP_TrackFitV709_NanoProdv2'
 config.Data.inputDBS = 'global'
 config.Data.useParent = False
 

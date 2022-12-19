@@ -18,9 +18,8 @@ config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 2
 config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
 config.Data.publication = True
-config.Data.outputDatasetTag = 'NanoV9MCPostVFP'
+config.Data.outputDatasetTag = 'NanoV9MCPostVFP_TrackFitV709_NanoProdv2'
 config.Data.inputDBS = 'global'
 config.Data.useParent = False
-config.Data.allowNonValidInputDataset = True
 
 config.Site.storageSite = 'T2_CH_CERN'
