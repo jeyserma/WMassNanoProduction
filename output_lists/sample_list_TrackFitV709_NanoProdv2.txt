@@ -1,0 +1,9 @@
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/DYJetsToMuMu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/NanoV9MCPostVFP_TrackFitV709_NanoProdv2
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/NanoV9MCPostVFP_TrackFitV709_NanoProdv2
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/SingleMuon/NanoV9Run2016FDataPostVFP_TrackFitV709_NanoProdv2
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/SingleMuon/NanoV9Run2016GDataPostVFP_TrackFitV709_NanoProdv2
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/SingleMuon/NanoV9Run2016HDataPostVFP_TrackFitV709_NanoProdv2
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/WminusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/NanoV9MCPostVFP_TrackFitV709_NanoProdv2
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/WminusJetsToTauNu_TauToMu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/NanoV9MCPostVFP_TrackFitV709_NanoProdv2
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/WplusJetsToMuNu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/NanoV9MCPostVFP_TrackFitV709_NanoProdv2
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/WplusJetsToTauNu_TauToMu_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos/NanoV9MCPostVFP_TrackFitV709_NanoProdv2

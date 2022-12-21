@@ -150,7 +150,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun, match_expr, v
 
         run_match = re.search("(Run20\d\d[A-Z])", das)
         if isData and run_match:
-            name = name.replace("Data", f"Data{run_match.group(1)}")
+            name = name.replace("Data", f"{run_match.group(1)}Data")
 
         requestName = hashedName(outname)
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
