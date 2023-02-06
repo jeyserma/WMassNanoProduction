@@ -10,6 +10,7 @@ import getpass
 import sys
 import datetime
 import json
+import re
 
 def fillTemplatedFile(template_file_name, out_file_name, template_dict):
     with open(template_file_name, "r") as templateFile:
@@ -19,7 +20,6 @@ def fillTemplatedFile(template_file_name, out_file_name, template_dict):
         outFile.write(result)
 
 def nameFromInput(das_path, tagAndProbe=False):
-    print(das_path[-4:])
     label = "MC" if "SIM" in das_path[-3:] else "Data"
     if tagAndProbe:
         label += "TagAndProbe"
@@ -31,8 +31,6 @@ def nameFromInput(das_path, tagAndProbe=False):
     else:#for MC
         # TODO: This doesn't actually work for data!
         label += "PreVFP" if "APV" in das_path else "PostVFP"
-
-    print(label)
 
     return label
 
@@ -51,9 +49,7 @@ def hashedName(name, bits=5):
     if len(name) < 100:
         return name
     
-    print("Name is", name)
     h = hashlib.sha256(name.encode('utf-8')).hexdigest()
-    print("Hash is", h)
     return name[:(100-bits)] + h[:bits]
 
 def makeConfig(path, name, config_name, das, nThreads):
@@ -101,7 +97,7 @@ def writeHistory(path, history_file, inputFile):
         f.write("Git diff of CMSSW is \n%s\n" % gitDiff(cmssw_dir))
         f.write("-"*80+"\n")
 
-def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
+def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun, match_expr, version):
     path = os.environ['CMSSW_BASE']+"/src/Configuration/WMassNanoProduction"
     if not os.path.isfile(inputFile):
         raise ValueError("Could not open file %s" % inputFile)
@@ -119,6 +115,9 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
     era = "NanoV9"
 
     for i, das in enumerate(inputs):
+        if match_expr and not re.match(match_expr, das):
+            continue
+
         name = era+nameFromInput(das, args.tagAndProbe)
         isData = "Data" in name
         config_name = name 
@@ -148,7 +147,12 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
                 outname += "TagAndProbe"
 
         das = das_split[0]
-        requestName = hashedName(outname)
+
+        run_match = re.search("(Run20\d\d[A-Z])", das)
+        if isData and run_match:
+            name = name.replace("Data", f"{run_match.group(1)}Data")
+
+        requestName = hashedName("_".join([outname, version]))
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
         
         units = 2 if not isData else 14
@@ -160,16 +164,19 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun):
                 "input" : das, "config" : config_name, "units" : units*args.nThreads,
                 "dbs" : "global" if len(das_split) == 1 else "phys03",
                 "useParent" : "False" if len(das_split) == 1 else "True",
+                "version" : version,
             })
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
         if submit[0] >= 1 and i % submit[0] == (submit[1]-1):
             submitCrab(outfile, history_file, dryRun)
 
 parser = argparse.ArgumentParser()
+parser.add_argument('-v', '--version', type=str, required=True, help='Version label to append to output tag')
 parser.add_argument('--dryRun', action='store_true', help='print submit commands rather than executing them')
 parser.add_argument('--makeConfig', action='store_true', help='run cmsDriver to build config file')
 parser.add_argument('--tagAndProbe', action='store_true', help='Submit tag and probe nano')
 parser.add_argument('-i', '--inputFiles', required=True, type=str, nargs='*', help='inputFiles to process')
+parser.add_argument('-m', '--filterExpr', default='', type=str, help='Expression to filter out files from the input list')
 parser.add_argument('-s', '--submit', type=int, nargs=2, help='Number of splits to make, which split to submit' \
         ' ex: 1 1 for all, 2 1 for every second file', default=(0,0))
 parser.add_argument('-j', '--nThreads', type=int, default=1, 
@@ -183,5 +190,5 @@ logging.basicConfig(level=logging.INFO)
 
 configsMade = []
 for i in args.inputFiles:
-    makeSubmitFiles(i, args.nThreads, args.submit, args.makeConfig, args.dryRun)
+    makeSubmitFiles(i, args.nThreads, args.submit, args.makeConfig, args.dryRun, args.filterExpr, args.version)
 

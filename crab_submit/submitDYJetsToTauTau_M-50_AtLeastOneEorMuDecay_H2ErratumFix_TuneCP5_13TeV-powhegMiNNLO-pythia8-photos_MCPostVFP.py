@@ -1,7 +1,7 @@
 from CRABClient.UserUtilities import config
 config = config()
 
-config.General.requestName = 'DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos2235c'
+config.General.requestName = 'DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_H2ErratumFix_TuneCP5_13TeV-powhegMiNNLO-pythia8-photos4971e'
 config.General.workArea = 'crab_projects'
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -18,7 +18,7 @@ config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 2
 config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
 config.Data.publication = True
-config.Data.outputDatasetTag = 'NanoV9MCPostVFP'
+config.Data.outputDatasetTag = 'NanoV9MCPostVFP_TrackFitV718_NanoProdv1'
 config.Data.inputDBS = 'global'
 config.Data.useParent = False
 
