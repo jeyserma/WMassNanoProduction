@@ -413,3 +413,15 @@ Traceback (most recent call last):
 ConfigException: Working area '/home/k/kelong/work/mWProd/CMSSW_10_6_26/src/Configuration/WMassNanoProduction/crab_submit/crab_projects/crab_SingleMuon_Run2016H-21Feb2020_UL2016_WMass_MiniAODv2-v4' already exists 
 Please change the requestName in the config file
 INFO 2022-12-30 01:11:31.236 UTC: 	 Log file is /home/k/kelong/work/mWProd/CMSSW_10_6_26/src/Configuration/WMassNanoProduction/crab_submit/crab.log
+DEBUG 2023-02-09 14:01:34.864 UTC: 	 CRAB Client version: v3.221018
+DEBUG 2023-02-09 14:01:34.864 UTC: 	 Running on: Linux lxplus8s10.cern.ch 4.18.0-408.el8.x86_64 #1 SMP Mon Jul 18 17:42:52 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2023-02-09 14:01:34.864 UTC: 	 Executing command: 'submit'
+DEBUG 2023-02-09 14:01:34.864 UTC: 	 Found CRAB cache file /home/k/kelong/.crab3
+DEBUG 2023-02-09 14:01:35.098 UTC: 	 CRAB Client version: v3.221018
+DEBUG 2023-02-09 14:01:35.099 UTC: 	 Running on: Linux lxplus8s10.cern.ch 4.18.0-408.el8.x86_64 #1 SMP Mon Jul 18 17:42:52 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2023-02-09 14:01:35.099 UTC: 	 Executing command: 'submit'
+DEBUG 2023-02-09 14:01:35.099 UTC: 	 Found CRAB cache file /home/k/kelong/.crab3
+DEBUG 2023-02-09 14:01:35.334 UTC: 	 CRAB Client version: v3.221018
+DEBUG 2023-02-09 14:01:35.334 UTC: 	 Running on: Linux lxplus8s10.cern.ch 4.18.0-408.el8.x86_64 #1 SMP Mon Jul 18 17:42:52 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2023-02-09 14:01:35.334 UTC: 	 Executing command: 'submit'
+DEBUG 2023-02-09 14:01:35.334 UTC: 	 Found CRAB cache file /home/k/kelong/.crab3

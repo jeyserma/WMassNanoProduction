@@ -155,7 +155,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun, match_expr, v
         requestName = hashedName("_".join([outname, version]))
         outfile = "/".join([path, "crab_submit", "submit"+outname+".py"])
         
-        units = 2 if not isData else 14
+        units = 2 if not isData else 10
 
         fillTemplatedFile("/".join([path, "Templates", "submitCrab%sTemplate" % era]),
             outfile, 

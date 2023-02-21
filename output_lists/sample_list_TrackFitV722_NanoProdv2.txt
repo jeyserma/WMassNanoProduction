@@ -1,0 +1,3 @@
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/SingleMuon/NanoV9Run2016FDataPostVFP_TrackFitV722_NanoProdv2
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/SingleMuon/NanoV9Run2016GDataPostVFP_TrackFitV722_NanoProdv2
+/eos/cms/store/cmst3/group/wmass/w-mass-13TeV/NanoAOD/SingleMuon/NanoV9Run2016HDataPostVFP_TrackFitV722_NanoProdv2
