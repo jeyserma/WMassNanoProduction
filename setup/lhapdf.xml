@@ -1,7 +1,7 @@
-<tool name="lhapdf" version="6.2.3-a2a84f5990d32c24c7240b02577bf55e">
+<tool name="lhapdf" version="6.4.0-6e1c0caa626970b41aec7b22a0ff6a95">
   <lib name="LHAPDF"/>
   <client>
-    <environment name="LHAPDF_BASE" default="/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/lhapdf/6.2.3-a2a84f5990d32c24c7240b02577bf55e"/>
+    <environment name="LHAPDF_BASE" default="/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/lhapdf/6.4.0-6e1c0caa626970b41aec7b22a0ff6a95"/>
     <environment name="LIBDIR" default="$LHAPDF_BASE/lib"/>
     <environment name="INCLUDE" default="$LHAPDF_BASE/include"/>
   </client>
