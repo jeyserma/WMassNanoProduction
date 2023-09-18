@@ -16,10 +16,10 @@ config.Data.inputDataset = '${input}'
 
 config.Data.splitting = '${splitting}'
 config.Data.unitsPerJob = ${units}
-config.Data.outLFNDirBase = '/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD' 
+config.Data.outLFNDirBase = '${outstorage}'
 config.Data.publication = True
 config.Data.outputDatasetTag = '${era}_${version}'
 config.Data.inputDBS = '${dbs}'
 config.Data.useParent = ${useParent}
 
-config.Site.storageSite = 'T2_CH_CERN'
+config.Site.storageSite = '${site}'
