@@ -21,6 +21,12 @@ def fillTemplatedFile(template_file_name, out_file_name, template_dict):
 
 def nameFromInput(das_path, tagAndProbe=False):
     label = "MC" if "SIM" in das_path[-3:] else "Data"
+    if 'UL2017' in das_path:
+        label += '2017'
+        return label
+    elif 'UL2018' in das_path:
+        label += '2018'
+        return label
     if tagAndProbe:
         label += "TagAndProbe"
     if 'Data' in label:
