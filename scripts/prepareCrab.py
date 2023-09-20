@@ -19,22 +19,21 @@ def fillTemplatedFile(template_file_name, out_file_name, template_dict):
     with open(out_file_name, "w") as outFile:
         outFile.write(result)
 
-def nameFromInput(das_path, tagAndProbe=False):
+def nameFromInput(das_path, tagAndProbe=False):    
     label = "MC" if "SIM" in das_path[-3:] else "Data"
     if 'UL2017' in das_path or 'UL17' in das_path: #needed since pattern in data and MC names are different
         label += '2017'
-        return label
     elif 'UL2018' in das_path or 'UL18' in das_path:
         label += '2018'
-        return label
     if tagAndProbe:
         label += "TagAndProbe"
-    if 'Data' in label:
+
+    if 'Data' in label and 'UL2016' in das_path:
         if 'HIPM' in das_path: 
             label += "PreVFP"
         else: 
             label += "PostVFP"
-    else:#for MC
+    elif 'UL16' in das_path:#for MC 2016
         # TODO: This doesn't actually work for data!
         label += "PreVFP" if "APV" in das_path else "PostVFP"
 
