@@ -30,7 +30,7 @@ cmsDriver.py RECO --conditions 106X_mc2017_realistic_v10 \
     --datatier NANOAODSIM --eventcontent NANOAODSIM \
     --era Run2_2017,run2_nanoAOD_106Xv2 \
     --geometry DB:Extended \
-    --customise Configuration/DataProcessing/Utils.addMonitoring, PhysicsTools/NanoAOD/nanoTP_cff.customizeNANOTP \
+    --customise Configuration/DataProcessing/Utils.addMonitoring, PhysicsTools/NanoAOD/nanoTP_cff.customizeNANOTP, PhysicsTools/NanoAOD/nano_cff.customizeGenLeptonPrecision \
     --filein $sample_name --fileout file:$outfile --nThreads $nThreads --no_exec \
     --python_filename $config_name --mc \
     --scenario pp --step PAT,USERNANO:nanotpSequenceMC \
