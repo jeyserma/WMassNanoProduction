@@ -30,4 +30,5 @@ cmsDriver.py RECO --conditions 106X_dataRun2_v37 \
     --no_exec \
     --number $nevents \
     --python_filename $config_name \
-    --scenario pp --step PAT,USERNANO:nanotpSequence --data
+    --scenario pp --step PAT,USERNANO:nanotpSequence --data \
+    --runUnscheduled
