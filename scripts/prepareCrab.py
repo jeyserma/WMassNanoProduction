@@ -140,6 +140,10 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun, match_expr, v
                 outname += "_TagAndProbe"
         else:
             outname += "_"+nameFromInput(das)
+            # check if it is extension samples, where we need to add the extension number to the label
+            matched = re.search("_ext(\d+)", das.split('/')[2])
+            if matched:
+                outname += matched.group(0)
             if len(das_split) > 1:
                 name += "WeightFix"
                 outname += "WeightFix"
