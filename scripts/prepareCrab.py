@@ -19,16 +19,21 @@ def fillTemplatedFile(template_file_name, out_file_name, template_dict):
     with open(out_file_name, "w") as outFile:
         outFile.write(result)
 
-def nameFromInput(das_path, tagAndProbe=False):
+def nameFromInput(das_path, tagAndProbe=False):    
     label = "MC" if "SIM" in das_path[-3:] else "Data"
+    if 'UL2017' in das_path or 'UL17' in das_path: #needed since pattern in data and MC names are different
+        label += '2017'
+    elif 'UL2018' in das_path or 'UL18' in das_path:
+        label += '2018'
     if tagAndProbe:
         label += "TagAndProbe"
-    if 'Data' in label:
+
+    if 'Data' in label and 'UL2016' in das_path:
         if 'HIPM' in das_path: 
             label += "PreVFP"
         else: 
             label += "PostVFP"
-    else:#for MC
+    elif 'UL16' in das_path:#for MC 2016
         # TODO: This doesn't actually work for data!
         label += "PreVFP" if "APV" in das_path else "PostVFP"
 
@@ -97,7 +102,7 @@ def writeHistory(path, history_file, inputFile):
         f.write("Git diff of CMSSW is \n%s\n" % gitDiff(cmssw_dir))
         f.write("-"*80+"\n")
 
-def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun, match_expr, version):
+def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun, match_expr, version, storage, site):
     path = os.environ['CMSSW_BASE']+"/src/Configuration/WMassNanoProduction"
     if not os.path.isfile(inputFile):
         raise ValueError("Could not open file %s" % inputFile)
@@ -168,7 +173,7 @@ def makeSubmitFiles(inputFile, nThreads, submit, doConfig, dryRun, match_expr, v
                 "input" : das, "config" : config_name, "units" : units*args.nThreads,
                 "dbs" : "global" if len(das_split) == 1 else "phys03",
                 "useParent" : "False" if len(das_split) == 1 else "True",
-                "version" : version,
+                "version" : version, "outstorage" : storage, "site" : site
             })
         logging.info("Wrote config file %s" % "/".join(outfile.split("/")[-2:]))
         if submit[0] >= 1 and i % submit[0] == (submit[1]-1):
@@ -185,6 +190,9 @@ parser.add_argument('-s', '--submit', type=int, nargs=2, help='Number of splits 
         ' ex: 1 1 for all, 2 1 for every second file', default=(0,0))
 parser.add_argument('-j', '--nThreads', type=int, default=1, 
     help="number of threads (make sure its consistent if you're not regenerating configs)")
+parser.add_argument('--storage', default='/store/group/cmst3/group/wmass/w-mass-13TeV/NanoAOD', type=str, help='Storage path of output Ntuples(default CERN storage)')
+parser.add_argument('--site', default='T2_CH_CERN', type=str, help='Site of the output storage(default:T2_CH_CERN)')
+
 args = parser.parse_args()
 if args.submit[1] > args.submit[0] or (args.submit[1] == 0 and args.submit[1] != args.submit[0]):
     raise ValueError("Second argument of --submit must be non-zero and less than first argument. " \
@@ -194,5 +202,5 @@ logging.basicConfig(level=logging.INFO)
 
 configsMade = []
 for i in args.inputFiles:
-    makeSubmitFiles(i, args.nThreads, args.submit, args.makeConfig, args.dryRun, args.filterExpr, args.version)
+    makeSubmitFiles(i, args.nThreads, args.submit, args.makeConfig, args.dryRun, args.filterExpr, args.version, args.storage, args.site)
 
