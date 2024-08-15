@@ -37,6 +37,12 @@ def nameFromInput(das_path, tagAndProbe=False):
         # TODO: This doesn't actually work for data!
         label += "PreVFP" if "APV" in das_path else "PostVFP"
 
+    print(das_path)
+    if '5TeV' in das_path or 'Run2017G' in das_path:
+        label += "LowPU5TeV"
+    elif 'LowPU' in das_path or 'Run2017H':
+        label += "LowPU"
+
     return label
 
 def gitHash(path):
